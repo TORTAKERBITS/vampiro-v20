@@ -1,0 +1,2360 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Vampiro V20 v40 correo con adjunto manual</title>
+<style>
+body{margin:0;background:#08080a;color:#eee;font-family:Georgia,serif}header{padding:16px;text-align:center;background:#111;border-bottom:1px solid #333;position:sticky;top:0}main{max-width:1100px;margin:auto;padding:18px}.card{background:#17171b;border:1px solid #3a3a43;border-radius:12px;padding:18px;margin:14px 0}.hidden{display:none}.question{background:#222229;border:1px solid #444;border-radius:10px;padding:12px;margin:10px 0}.option{display:block;background:#141419;border:1px solid #333;border-radius:7px;padding:8px;margin:6px 0}button{background:#7d0d15;color:white;border:1px solid #a22;border-radius:8px;padding:10px 14px;margin:5px;cursor:pointer}button.secondary{background:#333}input,textarea,select{width:100%;padding:7px;background:#111;color:#eee;border:1px solid #555;border-radius:5px}label{display:block;margin:5px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}.result{background:#170606;border:1px solid #733;border-radius:10px;padding:14px}.pill{display:inline-block;background:#2b1010;border:1px solid #733;border-radius:999px;padding:3px 8px;margin:2px}.notice{background:#24180f;border-left:4px solid #c9a46a;padding:10px;border-radius:8px}.warn{background:#2a1010;border:1px solid #733;padding:8px;border-radius:8px;margin:8px 0}.tracker{background:#102010;border:1px solid #375;padding:8px;border-radius:8px;margin:8px 0}.sheet{background:white;color:#111;font-family:Arial,sans-serif;border-radius:8px;padding:10px}.sheet h2,.sheet h3{color:#111;margin:5px 0}.sheet input,.sheet textarea{background:white;color:#111;border:1px solid #777}.basic-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.sheet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.sheet-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}.box{border:1px solid #333;padding:6px;margin:5px 0;background:white}.traitline{display:grid;grid-template-columns:1fr 55px;gap:4px;font-size:12px;margin:2px 0}.traitline input{text-align:center}.logo{font-size:38px;text-align:center}.final-page{page-break-after:always}.history-page{page-break-before:always}
+@media print{header,.no-print,#start,#stepClan,#bgStep,#meritStep,#sheetStep .no-print,#storyAsk,#storyStep{display:none!important}body{background:white;color:#111}main{padding:0}.card{border:none;background:white;margin:0;padding:0}.sheet{font-size:10.5px;padding:4mm}.basic-grid{grid-template-columns:repeat(4,1fr)}.sheet-grid{grid-template-columns:repeat(3,1fr);gap:3px}.sheet-grid-2{grid-template-columns:repeat(2,1fr);gap:3px}@page{size:A4;margin:8mm}}
+
+.dots{letter-spacing:3px;font-size:15px;white-space:nowrap}
+.dot.filled{color:#000}.dot.empty{color:#000}
+.squares{letter-spacing:3px;font-size:15px;white-space:nowrap}
+.health-row{display:grid;grid-template-columns:1fr 35px 24px;gap:4px;align-items:center;font-size:11px;margin:2px 0}
+.print-mini{font-size:10px}
+
+/* ===== Gothic printable character sheet v4 ===== */
+.gothic-sheet{
+  background:#f6f3ec;
+  color:#080808;
+  font-family: Georgia, 'Times New Roman', serif;
+  border:4px solid #111;
+  padding:14px;
+  box-shadow: inset 0 0 0 2px #777, inset 0 0 0 7px #eee;
+  min-height: auto;
+}
+.gothic-title{
+  text-align:center;
+  letter-spacing:4px;
+  border-bottom:3px double #111;
+  margin-bottom:8px;
+}
+.gothic-title .small-title{font-size:12px;font-weight:bold;letter-spacing:3px;}
+.gothic-title .main-title{font-size:46px;line-height:.9;font-weight:bold;}
+.gothic-title .sub-title{font-size:20px;letter-spacing:6px;font-weight:bold;}
+.gothic-info{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+  border:1px solid #111;
+  padding:8px;
+  margin-bottom:7px;
+  font-size:13px;
+}
+.gothic-info div{border-bottom:1px solid #999;min-height:18px;}
+.section-title{
+  display:flex;align-items:center;gap:8px;
+  text-align:center;
+  font-size:23px;
+  font-weight:bold;
+  color:#5d0909;
+  margin:8px 0 5px;
+}
+.section-title:before,.section-title:after{content:"";height:2px;background:#111;flex:1;}
+.gothic-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.gothic-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.gothic-box{
+  border:1.5px solid #111;
+  padding:6px 8px;
+  background:rgba(255,255,255,.45);
+  break-inside:avoid;
+}
+.gothic-box h3{
+  text-align:center;
+  margin:0 0 5px;
+  font-size:16px;
+  color:#5d0909;
+}
+.gothic-trait{
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+  gap:6px;
+  font-size:12px;
+  margin:2px 0;
+}
+.gothic-line{border-bottom:1px solid #111; display:inline-block; min-width:72px;}
+.gdot{font-size:14px;letter-spacing:1px;white-space:nowrap}
+.gsq{font-size:15px;letter-spacing:2px;white-space:nowrap}
+.bottom-grid{
+  display:grid;
+  grid-template-columns:1.1fr 1.1fr 1fr;
+  gap:8px;
+  margin-top:8px;
+}
+.health-grid{
+  display:grid;
+  grid-template-columns:1fr 28px 22px;
+  gap:5px;
+  font-size:12px;
+  margin:3px 0;
+}
+.merits-grid{
+  display:grid;
+  grid-template-columns:1fr 45px 1fr 45px;
+  gap:5px;
+  font-size:12px;
+}
+.freebie-costs{font-size:12px;line-height:1.25;}
+.story-sheet{
+  background:#f6f3ec;
+  color:#080808;
+  font-family: Georgia, 'Times New Roman', serif;
+  border:4px solid #111;
+  padding:18px;
+  box-shadow: inset 0 0 0 2px #777, inset 0 0 0 7px #eee;
+  min-height: auto;
+}
+.story-columns{
+  display:grid;
+  grid-template-columns:1.3fr 1fr;
+  gap:16px;
+}
+.story-block h3{color:#5d0909;margin:10px 0 4px;font-size:15px;}
+.story-block p,.story-block li{font-size:13px;line-height:1.35;}
+.narrator-card{
+  border:1.5px solid #111;
+  padding:12px;
+  min-height:450px;
+  background:rgba(255,255,255,.45);
+}
+.rule-footer{
+  text-align:center;
+  font-size:11px;
+  margin-top:8px;
+  border-top:1px solid #111;
+  padding-top:5px;
+}
+@media print{
+  .gothic-sheet{min-height:auto; height:277mm; padding:8mm; box-shadow:inset 0 0 0 2px #777; page-break-after:always;}
+  .story-sheet{min-height:auto; height:190mm; padding:8mm; page-break-before:always;}
+  .gothic-title .main-title{font-size:38px}
+  .section-title{font-size:18px;margin:5px 0 3px}
+  .gothic-box h3{font-size:13px}
+  .gothic-trait{font-size:10.5px;margin:1px 0}
+  .gdot{font-size:12px}.gsq{font-size:12px}
+  .bottom-grid{gap:5px}
+  .health-grid{font-size:10.5px;margin:1px 0}
+  .merits-grid{font-size:10px}
+  .freebie-costs{font-size:10px}
+}
+
+
+.validline{color:#dff7df}
+.errorline{color:#ffdede;font-weight:bold}
+.auto-note{font-size:12px;color:#ddd;margin-top:6px}
+
+/* ===== FINAL PRINT FIX v10 ===== */
+@media print {
+  body * { visibility: hidden !important; }
+  #finalOutput, #finalOutput * { visibility: visible !important; }
+  #finalOutput {
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  header, main > section:not(#finalOutput), .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+  }
+  .card {
+    border: none !important;
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+  .gothic-sheet {
+    width: 100% !important;
+    height: 277mm !important;
+    max-height: 277mm !important;
+    overflow: hidden !important;
+    padding: 5mm !important;
+    margin: 0 !important;
+    border: 2.2mm solid #111 !important;
+    box-shadow: inset 0 0 0 .5mm #777 !important;
+    page-break-after: auto !important;
+    break-after: auto !important;
+    font-size: 8.7px !important;
+  }
+  .gothic-title {
+    margin-bottom: 2mm !important;
+    border-bottom: .5mm double #111 !important;
+  }
+  .gothic-title .small-title { font-size: 8px !important; letter-spacing: 1.5px !important; }
+  .gothic-title .main-title { font-size: 25px !important; line-height: .85 !important; }
+  .gothic-title .sub-title { font-size: 12px !important; letter-spacing: 3px !important; }
+  .gothic-info {
+    gap: 1.5mm !important;
+    padding: 1.5mm !important;
+    margin-bottom: 1.5mm !important;
+    font-size: 8.5px !important;
+  }
+  .section-title {
+    font-size: 12.5px !important;
+    margin: 1.4mm 0 .8mm !important;
+    gap: 1.5mm !important;
+  }
+  .gothic-grid-3 {
+    gap: 1.5mm !important;
+  }
+  .gothic-grid-2 {
+    gap: 1.5mm !important;
+  }
+  .gothic-box {
+    padding: 1.2mm 1.5mm !important;
+    margin: 0 !important;
+    border: .35mm solid #111 !important;
+  }
+  .gothic-box h3 {
+    font-size: 9.2px !important;
+    margin: 0 0 .8mm !important;
+  }
+  .gothic-trait {
+    font-size: 7.6px !important;
+    margin: 0 !important;
+    line-height: 1.08 !important;
+    grid-template-columns: 1fr auto !important;
+  }
+  .gothic-line {
+    min-width: 30px !important;
+  }
+  .gdot {
+    font-size: 8.2px !important;
+    letter-spacing: 0 !important;
+  }
+  .gsq {
+    font-size: 8.2px !important;
+    letter-spacing: 0 !important;
+  }
+  .bottom-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 1.5mm !important;
+    margin-top: 1.5mm !important;
+  }
+  .health-grid {
+    font-size: 7.8px !important;
+    margin: 0 !important;
+    line-height: 1.08 !important;
+    grid-template-columns: 1fr 18px 12px !important;
+  }
+  .merits-grid {
+    font-size: 7.5px !important;
+    gap: 1mm !important;
+  }
+  .freebie-costs {
+    font-size: 7.3px !important;
+    line-height: 1.05 !important;
+    margin: 0 !important;
+    padding-left: 12px !important;
+  }
+  .rule-footer {
+    font-size: 7.2px !important;
+    margin-top: 1mm !important;
+    padding-top: .8mm !important;
+  }
+  body.with-story .gothic-sheet { page-break-after: always !important; break-after: page !important; }
+  .story-sheet {
+    width: 100% !important;
+    min-height: auto !important;
+    height: 277mm !important;
+    max-height: 277mm !important;
+    overflow: hidden !important;
+    padding: 7mm !important;
+    margin: 0 !important;
+    border: 2.2mm solid #111 !important;
+    box-shadow: inset 0 0 0 .5mm #777 !important;
+    page-break-before: auto !important;
+    break-before: auto !important;
+    font-size: 10px !important;
+  }
+  .story-columns {
+    grid-template-columns: 1.25fr .9fr !important;
+    gap: 5mm !important;
+  }
+  .story-block p, .story-block li {
+    font-size: 9.2px !important;
+    line-height: 1.18 !important;
+  }
+  .story-block h3, .narrator-card h3 {
+    font-size: 10.5px !important;
+    margin: 2mm 0 1mm !important;
+  }
+  .narrator-card {
+    min-height: 0 !important;
+    padding: 3mm !important;
+  }
+  @page {
+    size: A4 portrait;
+    margin: 5mm;
+  }
+}
+
+
+/* ===== FINAL PRINT LAYOUT v11: full page usage ===== */
+@media print {
+  @page { size: A4 portrait; margin: 4mm; }
+
+  body * { visibility: hidden !important; }
+  #finalOutput, #finalOutput * { visibility: visible !important; }
+
+  #finalOutput {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 202mm !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .gothic-sheet {
+    box-sizing: border-box !important;
+    width: 202mm !important;
+    height: 289mm !important;
+    max-height: 289mm !important;
+    overflow: hidden !important;
+    padding: 6mm !important;
+    margin: 0 !important;
+    border: 2.4mm solid #111 !important;
+    box-shadow: inset 0 0 0 .45mm #777 !important;
+    transform: none !important;
+    font-size: 10px !important;
+  }
+
+  body.with-story .gothic-sheet {
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+
+  .gothic-title { margin-bottom: 2.2mm !important; }
+  .gothic-title .small-title { font-size: 9px !important; letter-spacing: 2px !important; }
+  .gothic-title .main-title { font-size: 34px !important; line-height: .85 !important; }
+  .gothic-title .sub-title { font-size: 15px !important; letter-spacing: 4px !important; }
+
+  .gothic-info {
+    font-size: 9.6px !important;
+    padding: 2mm !important;
+    gap: 1.8mm !important;
+    margin-bottom: 1.8mm !important;
+  }
+
+  .section-title {
+    font-size: 15px !important;
+    margin: 1.7mm 0 1mm !important;
+  }
+
+  .gothic-grid-3 { gap: 2mm !important; }
+  .gothic-grid-2 { gap: 2mm !important; }
+
+  .gothic-box {
+    padding: 1.8mm 2mm !important;
+    border: .4mm solid #111 !important;
+  }
+
+  .gothic-box h3 {
+    font-size: 11px !important;
+    margin: 0 0 1mm !important;
+  }
+
+  .gothic-trait {
+    font-size: 9.2px !important;
+    line-height: 1.16 !important;
+    margin: .1mm 0 !important;
+  }
+
+  .gdot, .gsq {
+    font-size: 9.6px !important;
+    letter-spacing: .15mm !important;
+  }
+
+  .bottom-grid {
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 2mm !important;
+    margin-top: 2mm !important;
+  }
+
+  .health-grid {
+    font-size: 9px !important;
+    line-height: 1.15 !important;
+    grid-template-columns: 1fr 20px 14px !important;
+  }
+
+  .merits-grid {
+    font-size: 8.8px !important;
+  }
+
+  .freebie-costs {
+    font-size: 8.4px !important;
+    line-height: 1.12 !important;
+  }
+
+  .rule-footer {
+    font-size: 8.2px !important;
+    margin-top: 1.5mm !important;
+  }
+
+  .story-sheet {
+    box-sizing: border-box !important;
+    width: 202mm !important;
+    height: 289mm !important;
+    max-height: 289mm !important;
+    overflow: hidden !important;
+    padding: 8mm !important;
+    margin: 0 !important;
+    border: 2.4mm solid #111 !important;
+    box-shadow: inset 0 0 0 .45mm #777 !important;
+    font-size: 11px !important;
+  }
+
+  .story-block p, .story-block li {
+    font-size: 10.3px !important;
+    line-height: 1.25 !important;
+  }
+
+  .story-block h3, .narrator-card h3 {
+    font-size: 12px !important;
+  }
+}
+
+
+.help-text{font-size:13px;color:#d8c8c8;margin:4px 0 8px 24px;line-height:1.3}
+.info-card{background:#1d1212;border:1px solid #6d2a2a;border-radius:10px;padding:10px;margin:8px 0;color:#f0dddd}
+.info-card b{color:#ffd0d0}
+.info-card .example{font-size:12px;color:#cbb;margin-top:4px}
+.option small{display:block;color:#bbb;margin-left:22px;margin-top:3px;line-height:1.25}
+.summary-mini{background:#101820;border:1px solid #33506b;border-radius:10px;padding:10px;margin:10px 0;color:#dbeeff}
+
+
+.discipline-summary{font-size:11px;line-height:1.25}
+.discipline-summary h4{margin:8px 0 3px;color:#5d0909}
+.discipline-summary ol{margin:3px 0 7px 18px;padding:0}
+@media print{.discipline-summary{font-size:9px}}
+
+button:disabled{opacity:.45;cursor:not-allowed}
+.freebieAdd{max-width:70px}
+.freebie-summary-line{font-size:10px;line-height:1.15;margin-bottom:3px}
+
+/* ===== FREEBIE DESIGN v23 ===== */
+.freebie-choice-card{background:#201014;border:1px solid #7d3030;border-radius:12px;padding:14px;margin:8px 0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)}
+.freebie-choice-card h3{margin-top:0;color:#ffd0d0}
+.freebie-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0}
+.freebie-kpi{background:#111820;border:1px solid #33506b;border-radius:10px;padding:10px;text-align:center}
+.freebie-kpi b{display:block;font-size:18px;color:#fff}
+.freebie-cost-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;background:#120e0e}
+.freebie-cost-table th,.freebie-cost-table td{border:1px solid #503030;padding:6px;text-align:left}
+.freebie-cost-table th{background:#2b1010;color:#ffd0d0}
+.freebie-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:10px}
+.freebieAdd{max-width:70px;text-align:center}
+.freebie-summary-line{font-size:10px;line-height:1.15;margin-bottom:3px}
+.freebie-print-table{width:100%;border-collapse:collapse;font-size:9.3px;margin-top:4px}
+.freebie-print-table td,.freebie-print-table th{border:1px solid #111;padding:2px 3px;vertical-align:top}
+.freebie-print-table th{font-weight:bold;background:rgba(0,0,0,.06)}
+@media print{.freebie-print-table{font-size:7.6px}.freebie-summary-line{font-size:7.6px}}
+
+
+
+/* ===== FREEBIE MANUAL VISIBILITY v26 ===== */
+#manualFreebieBox{
+  background:linear-gradient(180deg,#14090b 0%,#0d0d12 100%);
+  border:1px solid #7d3030;
+  border-radius:14px;
+  padding:14px;
+  margin-top:12px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.04), 0 10px 30px rgba(0,0,0,.25);
+}
+.freebie-grid{align-items:start}
+.freebie-manual-card{
+  background:#15151b;
+  color:#f4eeee;
+  border:1px solid #5f2a2a;
+  border-radius:12px;
+  padding:10px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.035);
+}
+.freebie-manual-card h3{
+  margin:0 0 8px;
+  color:#ffd0d0;
+  font-size:15px;
+  border-bottom:1px solid #4b2424;
+  padding-bottom:5px;
+}
+.freebie-manual-card .traitline{
+  grid-template-columns:1fr 74px;
+  align-items:center;
+  background:#0f0f14;
+  border:1px solid #2e2e38;
+  border-radius:8px;
+  padding:6px 8px;
+  margin:5px 0;
+  font-size:12px;
+}
+.freebie-manual-card .traitline span{color:#f2e6e6}
+.freebie-manual-card .traitline small{display:block;color:#bfa8a8;margin-top:2px;font-size:10.5px;line-height:1.2}
+.freebie-manual-card input.freebieAdd{
+  width:64px;
+  max-width:64px;
+  background:#260d10;
+  color:#fff;
+  border:1px solid #b44444;
+  border-radius:7px;
+  font-weight:bold;
+  text-align:center;
+  padding:7px 4px;
+}
+.freebie-manual-card input.freebieAdd:focus{outline:2px solid #c9a46a;outline-offset:1px}
+#freebieManualTracker.tracker{
+  background:#101820;
+  border:1px solid #33506b;
+  color:#dbeeff;
+  margin-top:12px;
+}
+#freebieManualTracker .freebie-kpi{background:#0b1118;border-color:#41627f}
+#freebieManualTracker .freebie-kpi b{font-size:22px}
+.freebie-spend-title{display:block;margin:8px 0 4px;color:#ffd0d0}
+@media(max-width:720px){.freebie-manual-card .traitline{grid-template-columns:1fr 62px}.freebie-manual-card input.freebieAdd{width:54px}}
+
+
+/* ===== SAVE / EMAIL / PDF TOOLS v29 ===== */
+.tools-card{
+  background:#151116;
+  border:1px solid #5e2a2f;
+}
+.tool-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.tool-actions button{margin:0}
+.tool-panel{
+  background:#100d10;
+  border:1px solid #3f3035;
+  border-radius:10px;
+  padding:12px;
+  margin-top:10px;
+}
+.tool-panel label{font-size:13px;color:#f0dddd}
+.tool-panel small,.muted-help{color:#c7b6b6;font-size:12px;line-height:1.35}
+.final-actions{
+  background:#171116;
+  border:1px solid #633;
+  border-radius:12px;
+  padding:14px;
+  margin-top:14px;
+}
+.final-actions h3{margin-top:0;color:#ffd0d0}
+.final-action-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.email-print-panel{max-width:640px}
+.email-print-panel input[readonly]{opacity:.9;cursor:not-allowed}
+.tool-separator{border:0;border-top:1px solid #3f3035;margin:14px 0}
+.status-ok{color:#dff7df;font-weight:bold}
+.status-warn{color:#ffe0b5;font-weight:bold}
+@media(max-width:760px){.final-action-grid{grid-template-columns:1fr}}
+@media print{.tools-card,.final-actions{display:none!important}}
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head><body><header><h1>🦇 Vampiro V20 — Creador de Personajes</h1><p>Fan-made, no oficial</p></header><main>
+<section id="start" class="card"><h2>1) Nombre del jugador y personaje</h2><label>Nombre del jugador</label><input id="startPlayer" placeholder="Ej: Víctor"><label>Nombre del personaje</label><input id="startName"><button id="startBtn" type="button" onclick="startSect()">Comenzar</button></section>
+<section id="sectStep" class="card hidden"><h2>Pregunta clave: Secta u organización</h2><div class="notice">Antes del test de clan, responde cómo enfrentaría tu personaje su nueva naturaleza. Esto definirá si el resultado se orienta a Camarilla, Sabbat, Independientes o Caitiff/Autarca.</div><div id="sectQuestions"></div><button id="calcSectBtn" type="button" onclick="calcSect()">Continuar al Test de Clan</button></section>
+<section id="sectResult" class="card hidden"></section>
+<section id="stepClan" class="card hidden"><h2>Test de Clan</h2><button type="button" class="secondary" onclick="randomizeClanAnswers()">Responder todo aleatoriamente</button><div id="clanQuestions"></div><button id="calcClanBtn" type="button">Calcular clan</button></section>
+<section id="clanResult" class="card hidden"></section>
+<section id="bgStep" class="card hidden"><h2>Trasfondos</h2><p class="small">El sistema siempre dejará exactamente 3 Trasfondos distintos. Si eliges uno repetido, se completará automáticamente con otro disponible.</p><button type="button" class="secondary" onclick="randomizeBackgroundAnswers()">Responder todo aleatoriamente</button><div id="bgQuestions"></div><button id="calcBgBtn" type="button">Asignar trasfondos</button></section>
+<section id="bgResult" class="card hidden"></section>
+<section id="meritStep" class="card hidden"><h2>2) Méritos y Defectos</h2><div class="notice"><b>Primero debes elegir obligatoriamente 1 Defecto.</b> Después responderás 3 preguntas más para completar 4 rasgos en total. Las preguntas usan lenguaje simple para jugadores nuevos. Los Méritos descuentan puntos gratuitos y los Defectos los aumentan.</div><button type="button" class="secondary" onclick="randomizeMeritAnswers()">Responder todo aleatoriamente</button><div id="meritQuestions"></div><button id="calcMeritBtn" type="button">Asignar méritos/defectos</button></section>
+<section id="meritResult" class="card hidden"></section>
+<section id="sheetStep" class="card hidden"><h2>3) Hoja editable</h2><div class="notice">Selecciona qué combinación de atributos y habilidades te interesa más para que se asignen automáticamente. Luego puedes modificar Atributos, Habilidades, Virtudes y Trasfondos manualmente, pero cada grupo debe mantener exactamente el total asignado. Las Disciplinas quedan fijas en 1 y la Fuerza de Voluntad es igual a Coraje.</div><div id="sheetBuilder"></div></section>
+
+<section id="freebieStep" class="card hidden no-print">
+<h2>4) Puntos gratuitos</h2>
+<div class="notice">
+  Antes de pasar a historia o impresión, decide si los puntos gratuitos quedarán para conversar con el Narrador o si los asignarás ahora manualmente.
+  <br><b id="freebieAvailableLabel">Puntos disponibles: calculando...</b>
+</div>
+<div class="freebie-kpis">
+  <div class="freebie-kpi"><span>Base</span><b>35</b><small>puntos iniciales</small></div>
+  <div class="freebie-kpi"><span>Méritos</span><b id="freebieMeritCostBox">0</b><small>se descuentan</small></div>
+  <div class="freebie-kpi"><span>Defectos</span><b id="freebieFlawGainBox">0</b><small>se suman</small></div>
+  <div class="freebie-kpi"><span>Total disponible</span><b id="freebieTotalBox">0</b><small>para gastar o guardar</small></div>
+</div>
+<table class="freebie-cost-table">
+  <tr><th>Elemento</th><th>Costo por círculo</th><th>Uso</th></tr>
+  <tr><td>Atributos</td><td>5 puntos</td><td>Físicos, Sociales o Mentales</td></tr>
+  <tr><td>Habilidades</td><td>2 puntos</td><td>Talentos, Técnicas o Conocimientos</td></tr>
+  <tr><td>Disciplinas</td><td>7 puntos</td><td>Poderes del clan</td></tr>
+  <tr><td>Trasfondos</td><td>2 puntos</td><td>Recursos narrativos</td></tr>
+  <tr><td>Virtudes</td><td>5 puntos</td><td>Conciencia, Autocontrol o Coraje</td></tr>
+  <tr><td>Humanidad</td><td>1 punto</td><td>Valor derivado adicional</td></tr>
+  <tr><td>Fuerza de Voluntad</td><td>1 punto</td><td>Valor derivado adicional</td></tr>
+</table>
+<div class="grid">
+  <div class="freebie-choice-card">
+    <h3>Asignar con el Narrador</h3>
+    <p>Continúa de forma normal. La ficha impresa mantiene los puntos como referencia y no agrega experiencia inicial automática.</p>
+    <button type="button" onclick="chooseNarratorFreebies()">Asignar con el Narrador</button>
+  </div>
+  <div class="freebie-choice-card">
+    <h3>Asignar manualmente</h3>
+    <p>Gasta puntos ahora para subir rasgos. Todo punto no gastado se mostrará como <b>Experiencia inicial</b> en la ficha impresa.</p>
+    <button type="button" onclick="chooseManualFreebies()">Asignar manualmente</button>
+  </div>
+</div>
+<div id="manualFreebieBox" class="hidden">
+  <div class="summary-mini">
+    <b>Asignación manual:</b> escribe cuántos círculos extra quieres comprar en cada rasgo. El sistema calcula el costo y no permite superar el total disponible. Si intentas gastar de más, ajusta automáticamente el último valor para que la experiencia nunca quede negativa.
+  </div>
+  <div id="freebieManualBuilder"></div>
+  <div id="freebieManualTracker" class="tracker"></div>
+  <button id="applyManualFreebieBtn" type="button" onclick="applyManualFreebies()">Aplicar puntos manuales y continuar</button>
+  <button type="button" class="secondary" onclick="chooseNarratorFreebies()">Cancelar y asignar con Narrador</button>
+</div>
+</section>
+
+<section id="storyAsk" class="card hidden no-print"><h2>5) Historia del personaje</h2><p>¿Deseas realizar un test personalizado para crear una historia del personaje según su organización, o prefieres imprimir solo la hoja lista para jugar?</p><button id="yesStoryBtn" type="button">Crear historia</button><button id="noStoryBtn" type="button" class="secondary">Solo imprimir hoja</button></section>
+<section id="storyStep" class="card hidden"><h2>Test de historia</h2><button type="button" class="secondary" onclick="randomizeStoryAnswers()">Responder todo aleatoriamente</button><div id="storyQuestions"></div><button id="genStoryBtn" type="button">Crear historia</button></section>
+<section id="finalOutput" class="card hidden"></section>
+</main><script>
+/* ===== CORREO v40 =====
+   Esta versión prepara el correo, pero el PDF se adjunta manualmente.
+   Los datos de EmailJS quedan sin uso salvo que se reactive el envío automático.
+
+   Template recomendado en EmailJS:
+   - To email: {{to_email}}
+   - CC opcional: {{cc_email}}
+   - Subject: {{subject}}
+   - Adjuntos / Attachments: Variable Attachment
+     * Parameter name: pdf_base64
+     * Filename: {{pdf_filename}}
+     * Content type: application/pdf
+
+   El correo del Narrador queda fijo por defecto en EMAIL_NARRADOR_DEFAULT.
+*/
+const EMAILJS_PUBLIC_KEY = "REEMPLAZAR_PUBLIC_KEY";
+const EMAILJS_SERVICE_ID = "REEMPLAZAR_SERVICE_ID";
+const EMAILJS_TEMPLATE_ID = "REEMPLAZAR_TEMPLATE_ID";
+const EMAIL_NARRADOR_DEFAULT = "victor4740@gmail.com";
+
+function emailJSConfigured(){
+  return EMAILJS_PUBLIC_KEY && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID &&
+    !EMAILJS_PUBLIC_KEY.startsWith("REEMPLAZAR") &&
+    !EMAILJS_SERVICE_ID.startsWith("REEMPLAZAR") &&
+    !EMAILJS_TEMPLATE_ID.startsWith("REEMPLAZAR");
+}
+function initEmailJSOnce(){
+  if(!emailJSConfigured() || !window.emailjs) return false;
+  if(!window.__vampiroEmailJSReady){
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    window.__vampiroEmailJSReady = true;
+  }
+  return true;
+}
+
+
+const CLANS = {"Brujah": {"icon": "✊", "disc": ["Celeridad", "Potencia", "Presencia"], "desc": "Rebelde, directo y combativo.", "weak": "Mayor dificultad para controlar la ira."}, "Gangrel": {"icon": "🐺", "disc": ["Animalismo", "Fortaleza", "Protean"], "desc": "Independiente, salvaje y resistente.", "weak": "La Bestia puede dejar rasgos animales."}, "Malkavian": {"icon": "🧠", "disc": ["Auspex", "Dementación", "Ofuscación"], "desc": "Visionario, extraño y perceptivo.", "weak": "Carga con una forma de locura."}, "Nosferatu": {"icon": "🕳️", "disc": ["Animalismo", "Ofuscación", "Potencia"], "desc": "Informante, oculto y superviviente.", "weak": "Apariencia monstruosa."}, "Toreador": {"icon": "🎭", "disc": ["Auspex", "Celeridad", "Presencia"], "desc": "Social, artístico y seductor.", "weak": "Puede quedar fascinado por la belleza."}, "Tremere": {"icon": "🔮", "disc": ["Auspex", "Dominación", "Taumaturgia"], "desc": "Estudioso, ocultista y controlador.", "weak": "Atado a jerarquías y secretos."}, "Ventrue": {"icon": "👑", "disc": ["Dominación", "Fortaleza", "Presencia"], "desc": "Líder, político y estratégico.", "weak": "Solo se alimenta de un tipo específico de víctima."}, "Assamita": {"icon": "⚔️", "disc": ["Celeridad", "Ofuscación", "Extinción"], "desc": "Disciplinado, letal y justiciero.", "weak": "La sangre y la justicia pueden volverse obsesivas."}, "Giovanni": {"icon": "💀", "disc": ["Dominación", "Nigromancia", "Potencia"], "desc": "Familiar, financiero y nigromante.", "weak": "Su mordisco provoca dolor."}, "Lasombra": {"icon": "🌑", "disc": ["Dominación", "Obtenebración", "Potencia"], "desc": "Ambicioso, dominante y oscuro.", "weak": "No posee reflejo normal."}, "Ravnos": {"icon": "🎲", "disc": ["Animalismo", "Quimerismo", "Fortaleza"], "desc": "Embaucador, viajero e ilusionista.", "weak": "Ligado a un vicio o tentación recurrente."}, "Seguidores de Set": {"icon": "🐍", "disc": ["Ofuscación", "Presencia", "Serpentis"], "desc": "Tentador, manipulador y corruptor.", "weak": "La luz intensa y símbolos de pureza pueden afectarlo."}, "Tzimisce": {"icon": "🦴", "disc": ["Animalismo", "Auspex", "Vicisitud"], "desc": "Territorial, refinado y monstruoso.", "weak": "Debe descansar cerca de tierra ligada a su pasado."}};
+CLANS["Caitiff"] = {"icon":"🩸", "disc":["Auspex","Fortaleza","Presencia"], "desc":"Sin clan reconocido, adaptable y rechazado por la sociedad vampírica.", "weak":"No posee debilidad de clan definida, pero sufre rechazo social por no tener linaje reconocido ni Disciplinas de Clan."};
+const CAITIFF_PACKAGES = {
+ "Equilibrado":["Auspex","Fortaleza","Presencia"],
+ "Depredador":["Celeridad","Potencia","Ofuscación"],
+ "Callejero":["Animalismo","Ofuscación","Potencia"],
+ "Dominante":["Dominación","Presencia","Fortaleza"],
+ "Superviviente":["Auspex","Ofuscación","Fortaleza"]
+};
+
+const Q = [["¿Qué tipo de liderazgo te acomoda más?", [["Dirigir con autoridad", ["Ventrue", "Lasombra"]], ["Inspirar rebeldía", ["Brujah", "Gangrel"]], ["Guiar con conocimiento", ["Tremere", "Malkavian"]], ["Convencer con carisma", ["Toreador", "Seguidores de Set"]], ["Actuar desde las sombras", ["Nosferatu", "Assamita"]]]], ["Cuando alguien te amenaza, ¿cómo reaccionas?", [["Uso mi posición para frenarlo", ["Ventrue", "Giovanni"]], ["Lo enfrento directamente", ["Brujah", "Assamita"]], ["Busco información en su contra", ["Nosferatu", "Tremere"]], ["Intento manipular sus emociones", ["Toreador", "Seguidores de Set"]], ["Me alejo y preparo una respuesta", ["Gangrel", "Ravnos"]]]], ["¿Qué tipo de secreto te atrae más?", [["Secretos políticos", ["Ventrue", "Lasombra"]], ["Secretos criminales", ["Brujah", "Assamita"]], ["Secretos ocultistas", ["Tremere", "Malkavian"]], ["Secretos familiares o de muertos", ["Giovanni", "Tzimisce"]], ["Secretos sociales o sexuales", ["Toreador", "Seguidores de Set"]]]], ["¿Qué profesión mortal encaja mejor?", [["Abogado, empresario o político", ["Ventrue", "Lasombra"]], ["Activista, guardia o boxeador", ["Brujah", "Gangrel"]], ["Profesor, médico o investigador", ["Tremere", "Malkavian"]], ["Actor, músico o diseñador", ["Toreador", "Ravnos"]], ["Detective, hacker o sepulturero", ["Nosferatu", "Giovanni"]]]], ["¿Qué ambiente te resulta más cómodo?", [["Oficina de poder", ["Ventrue", "Lasombra"]], ["Calle o bar popular", ["Brujah", "Gangrel"]], ["Universidad o biblioteca", ["Tremere", "Malkavian"]], ["Teatro, galería o club", ["Toreador", "Seguidores de Set"]], ["Túneles, cementerio o refugio oculto", ["Nosferatu", "Tzimisce"]]]], ["¿Qué harías con un enemigo derrotado?", [["Lo obligaría a servirme", ["Ventrue", "Lasombra"]], ["Le daría una lección pública", ["Brujah", "Assamita"]], ["Lo estudiaría para entenderlo", ["Tremere", "Malkavian"]], ["Lo usaría como ejemplo social", ["Toreador", "Giovanni"]], ["Lo engañaría para que no sepa que ganó", ["Ravnos", "Nosferatu"]]]], ["¿Qué te parece más importante en una crónica?", [["Intriga política", ["Ventrue", "Lasombra"]], ["Acción y conflicto", ["Brujah", "Gangrel"]], ["Misterio e investigación", ["Tremere", "Malkavian"]], ["Drama social", ["Toreador", "Seguidores de Set"]], ["Horror corporal o sobrenatural", ["Tzimisce", "Giovanni"]]]], ["¿Cómo prefieres obtener información?", [["Preguntando a gente influyente", ["Ventrue", "Toreador"]], ["Presionando al objetivo", ["Brujah", "Assamita"]], ["Investigando documentos", ["Tremere", "Malkavian"]], ["Espiando sin ser visto", ["Nosferatu", "Ravnos"]], ["Consultando muertos o cultos", ["Giovanni", "Seguidores de Set"]]]], ["¿Qué relación tiene tu personaje con la moral?", [["La usa para justificar el orden", ["Ventrue", "Lasombra"]], ["La defiende aunque sea violento", ["Brujah", "Assamita"]], ["La cuestiona intelectualmente", ["Tremere", "Malkavian"]], ["La adapta a sus deseos", ["Toreador", "Seguidores de Set"]], ["Está dejando de comprenderla", ["Nosferatu", "Tzimisce"]]]], ["¿Qué tipo de refugio prefieres?", [["Departamento elegante", ["Ventrue", "Toreador"]], ["Lugar simple y fácil de abandonar", ["Brujah", "Gangrel"]], ["Laboratorio o sala de estudio", ["Tremere", "Malkavian"]], ["Mansión familiar o mausoleo", ["Giovanni", "Tzimisce"]], ["Subterráneo o lugar secreto", ["Nosferatu", "Assamita"]]]], ["¿Qué debilidad narrativa te interesa interpretar?", [["Orgullo", ["Ventrue", "Lasombra"]], ["Ira", ["Brujah", "Gangrel"]], ["Obsesión", ["Tremere", "Malkavian"]], ["Deseo de aprobación", ["Toreador", "Seguidores de Set"]], ["Aislamiento monstruoso", ["Nosferatu", "Tzimisce"]]]], ["¿Cómo se relaciona tu personaje con la familia?", [["La protege como legado", ["Ventrue", "Giovanni"]], ["Se rebeló contra ella", ["Brujah", "Ravnos"]], ["La dejó por sus estudios", ["Tremere", "Malkavian"]], ["La usa como fachada social", ["Toreador", "Seguidores de Set"]], ["Ya no puede acercarse a ella", ["Nosferatu", "Gangrel"]]]], ["¿Qué poder sobrenatural te llama más?", [["Dar órdenes irresistibles", ["Ventrue", "Lasombra"]], ["Ser más rápido o fuerte", ["Brujah", "Assamita"]], ["Ver cosas ocultas", ["Tremere", "Malkavian"]], ["Alterar emociones o deseos", ["Toreador", "Seguidores de Set"]], ["Cambiar cuerpo o crear ilusiones", ["Tzimisce", "Ravnos"]]]], ["¿Qué tipo de aliado necesitas?", [["Un político o empresario", ["Ventrue", "Giovanni"]], ["Un guerrero leal", ["Brujah", "Assamita"]], ["Un experto académico", ["Tremere", "Malkavian"]], ["Un artista o figura pública", ["Toreador", "Seguidores de Set"]], ["Un informante oculto", ["Nosferatu", "Ravnos"]]]], ["¿Qué situación te gustaría jugar?", [["Negociar con el Príncipe", ["Ventrue", "Lasombra"]], ["Defender un territorio", ["Brujah", "Gangrel"]], ["Resolver un ritual fallido", ["Tremere", "Malkavian"]], ["Manipular una fiesta de élite", ["Toreador", "Seguidores de Set"]], ["Investigar cadáveres extraños", ["Giovanni", "Nosferatu"]]]], ["¿Qué pecado personal encaja mejor?", [["Ambición", ["Ventrue", "Lasombra"]], ["Violencia", ["Brujah", "Assamita"]], ["Curiosidad peligrosa", ["Tremere", "Malkavian"]], ["Vanidad", ["Toreador", "Seguidores de Set"]], ["Crueldad fría", ["Giovanni", "Tzimisce"]]]], ["¿Qué haría tu personaje con dinero?", [["Comprar influencia", ["Ventrue", "Giovanni"]], ["Financiar una causa", ["Brujah", "Assamita"]], ["Comprar libros o artefactos", ["Tremere", "Malkavian"]], ["Crear un club o galería", ["Toreador", "Seguidores de Set"]], ["Construir rutas de escape", ["Gangrel", "Ravnos"]]]], ["¿Cómo actuarías en una reunión vampírica?", [["Buscaría quién manda", ["Ventrue", "Lasombra"]], ["Desafiaría al más arrogante", ["Brujah", "Gangrel"]], ["Escucharía y analizaría", ["Tremere", "Malkavian"]], ["Hablaría con todos", ["Toreador", "Seguidores de Set"]], ["Me mantendría invisible", ["Nosferatu", "Assamita"]]]], ["¿Qué tipo de humanidad perdida te interesa?", [["Perder empatía por poder", ["Ventrue", "Lasombra"]], ["Perder control por rabia", ["Brujah", "Gangrel"]], ["Perder cordura por conocimiento", ["Tremere", "Malkavian"]], ["Perder amor por deseo", ["Toreador", "Seguidores de Set"]], ["Perder forma humana", ["Nosferatu", "Tzimisce"]]]], ["¿Qué haría tu personaje si debe huir?", [["Usaría contactos de alto nivel", ["Ventrue", "Giovanni"]], ["Pelearía para abrirse paso", ["Brujah", "Assamita"]], ["Prepararía una ruta calculada", ["Tremere", "Nosferatu"]], ["Engañaría a sus perseguidores", ["Ravnos", "Seguidores de Set"]], ["Se ocultaría en la naturaleza", ["Gangrel", "Tzimisce"]]]], ["¿Qué símbolo elegirías?", [["Corona", ["Ventrue", "Lasombra"]], ["Puño", ["Brujah", "Assamita"]], ["Libro", ["Tremere", "Malkavian"]], ["Máscara", ["Toreador", "Ravnos"]], ["Calavera o serpiente", ["Giovanni", "Seguidores de Set"]]]], ["¿Qué problema externo te gustaría enfrentar?", [["Corrupción política", ["Ventrue", "Lasombra"]], ["Violencia callejera", ["Brujah", "Gangrel"]], ["Sectas ocultistas", ["Tremere", "Malkavian"]], ["Escándalo social", ["Toreador", "Seguidores de Set"]], ["Muertos inquietos o monstruos", ["Giovanni", "Tzimisce"]]]], ["¿Cómo tratarías a un mortal que sabe demasiado?", [["Lo convertiría en recurso", ["Ventrue", "Giovanni"]], ["Lo intimidaría", ["Brujah", "Assamita"]], ["Borraría sus pistas", ["Tremere", "Nosferatu"]], ["Lo seduciría o distraería", ["Toreador", "Seguidores de Set"]], ["Lo haría dudar de lo que vio", ["Malkavian", "Ravnos"]]]], ["¿Qué reputación quieres tener?", [["Respetado", ["Ventrue", "Lasombra"]], ["Temido", ["Brujah", "Assamita"]], ["Sabio", ["Tremere", "Malkavian"]], ["Admirado", ["Toreador", "Seguidores de Set"]], ["Misterioso", ["Nosferatu", "Ravnos"]]]], ["¿Qué perdería más dolorosamente tu personaje?", [["Su poder", ["Ventrue", "Lasombra"]], ["Su libertad", ["Brujah", "Gangrel"]], ["Su mente", ["Tremere", "Malkavian"]], ["Su belleza o amor", ["Toreador", "Seguidores de Set"]], ["Su identidad", ["Nosferatu", "Tzimisce"]]]], ["¿Qué haría ante una orden injusta?", [["Obedecería y luego maniobraría", ["Ventrue", "Lasombra"]], ["Se negaría", ["Brujah", "Gangrel"]], ["Buscaría una excepción", ["Tremere", "Assamita"]], ["Negociaría", ["Toreador", "Giovanni"]], ["Desaparecería", ["Nosferatu", "Ravnos"]]]], ["¿Qué elemento de terror prefieres?", [["Poder corruptor", ["Ventrue", "Lasombra"]], ["Violencia descontrolada", ["Brujah", "Gangrel"]], ["Locura y secretos", ["Malkavian", "Tremere"]], ["Deseo y decadencia", ["Toreador", "Seguidores de Set"]], ["Cuerpo y muerte", ["Tzimisce", "Giovanni"]]]], ["¿Qué papel tomarías en la coterie?", [["Líder", ["Ventrue", "Lasombra"]], ["Combatiente", ["Brujah", "Gangrel"]], ["Ocultista", ["Tremere", "Malkavian"]], ["Cara social", ["Toreador", "Seguidores de Set"]], ["Espía", ["Nosferatu", "Assamita"]]]], ["¿Qué relación quieres con tu Sire?", [["Respeto jerárquico", ["Ventrue", "Lasombra"]], ["Conflicto abierto", ["Brujah", "Gangrel"]], ["Aprendizaje peligroso", ["Tremere", "Malkavian"]], ["Atracción o dependencia", ["Toreador", "Seguidores de Set"]], ["Miedo o secreto", ["Nosferatu", "Giovanni"]]]], ["¿Qué final trágico temes más?", [["Ser destruido políticamente", ["Ventrue", "Lasombra"]], ["Matar por rabia", ["Brujah", "Gangrel"]], ["Saber demasiado", ["Tremere", "Malkavian"]], ["Ser olvidado", ["Toreador", "Ravnos"]], ["Convertirte en monstruo completo", ["Nosferatu", "Tzimisce"]]]]];
+const BGQ = [
+["Si tu personaje tuviera que pedir ayuda sin explicar demasiado, ¿a quién recurriría?", [["Amigos o conocidos que le deben favores", "Aliados"], ["Personas que siempre saben rumores útiles", "Contactos"], ["Alguien con experiencia que puede aconsejarlo", "Mentor"], ["Personas que trabajan para él", "Criados"], ["Gente que lo respeta en ciertos círculos", "Estatus"]]],
+["¿Qué ventaja práctica le serviría más para no terminar durmiendo bajo un puente gótico?", [["Dinero, propiedades o recursos económicos", "Recursos"], ["Influencia en instituciones o grupos importantes", "Influencia"], ["Un lugar seguro donde esconderse", "Refugio"], ["Una reputación conocida por otros", "Fama"], ["Personas de confianza para alimentarse con menos riesgo", "Rebaño"]]],
+["¿Qué recurso extra sería más útil cuando todo sale mal, porque siempre sale mal?", [["Contactos que entreguen información rápida", "Contactos"], ["Un mentor que sepa más de lo que cuenta", "Mentor"], ["Dinero para resolver problemas elegantemente", "Recursos"], ["Aliados dispuestos a involucrarse", "Aliados"], ["Un refugio preparado para emergencias", "Refugio"]]]
+];
+const MQ = [["Mayor ventaja personal:", [["Sangre Fría", "merit", 2], ["Memoria Eidética", "merit", 2], ["Carisma Natural", "merit", 2], ["Sentidos Agudos", "merit", 1], ["Suerte", "merit", 3]]], ["Mayor problema:", [["Enemigo", "flaw", 2], ["Secreto Oscuro", "flaw", 1], ["Mala Reputación", "flaw", 2], ["Timidez", "flaw", 1], ["Deuda", "flaw", 2]]], ["Rasgo sobrenatural:", [["Médium", "merit", 2], ["Sueños Proféticos", "merit", 2], ["Aura Inquietante", "flaw", 2], ["Marcado por Espíritus", "flaw", 3], ["Suerte Extraña", "merit", 3]]], ["Debilidad práctica:", [["Cicatriz Notoria", "flaw", 1], ["Cojo", "flaw", 3], ["Limitación Física", "flaw", 2], ["Ambidiestro", "merit", 1], ["Digestión Eficiente", "merit", 3]]], ["Relación complicada:", [["Dependiente Mortal", "flaw", 3], ["Amor Perdido", "flaw", 2], ["Mentor Protector", "merit", 3], ["Contactos Útiles", "merit", 2], ["Rival Persistente", "flaw", 2]]]];
+const ATTRS = {"Físicos": ["Fuerza", "Destreza", "Resistencia"], "Sociales": ["Carisma", "Manipulación", "Apariencia"], "Mentales": ["Percepción", "Inteligencia", "Astucia"]};
+const ABIL = {"Talentos": ["Alerta", "Atletismo", "Callejeo", "Empatía", "Esquivar", "Expresión", "Intimidación", "Liderazgo", "Pelea", "Subterfugio"], "Técnicas": ["Armas C.C.", "Armas de Fuego", "Conducir", "Etiqueta", "Interpretación", "Pericias", "Seguridad", "Sigilo", "Supervivencia", "Trato con Animales"], "Conocimientos": ["Academicismo", "Ciencias", "Finanzas", "Informática", "Investigación", "Leyes", "Lingüística", "Medicina", "Ocultismo", "Política"]};
+const VIRT = ["Conciencia", "Autocontrol", "Coraje"];
+const STORY = [["¿Dónde nació o creció el personaje?", ["Santiago", "Valparaíso", "Buenos Aires", "Madrid", "Una ciudad ficticia del Narrador"]], ["¿Cómo fue su infancia?", ["Protegida y cómoda", "Difícil y solitaria", "Marcada por conflictos familiares", "Llena de estudios y disciplina", "Libre, inestable y aventurera"]], ["¿Qué relación tenía con su familia?", ["Muy cercana", "Distante", "Conflictiva", "De dependencia económica", "Casi inexistente"]], ["¿A qué se dedicaba antes del Abrazo?", ["Profesional o empresario", "Artista o músico", "Estudiante o académico", "Criminal o informante", "Trabajador común"]], ["¿Cuál era su mayor sueño mortal?", ["Tener poder o reconocimiento", "Formar una familia", "Ser libre e independiente", "Descubrir algo importante", "Crear una obra memorable"]], ["¿Cuál era su mayor miedo mortal?", ["Fracasar", "Ser abandonado", "Perder la libertad", "Ser descubierto", "Hacer daño a alguien amado"]], ["¿Quién fue la persona más importante de su vida?", ["Padre o madre", "Pareja", "Hermano o hermana", "Mejor amigo", "Mentor o profesor"]], ["¿Qué error cambió su destino?", ["Confió en la persona equivocada", "Aceptó dinero peligroso", "Investigó algo prohibido", "Traicionó a alguien cercano", "Estuvo en el lugar equivocado"]], ["¿Cómo se relacionaba con la autoridad?", ["La respetaba", "La desafiaba", "La manipulaba", "La temía", "La evitaba"]], ["¿Qué aspecto de sí mismo ocultaba?", ["Ambición", "Culpa", "Deseos prohibidos", "Miedo", "Una doble vida"]], ["¿Cómo conoció a su Sire?", ["En el trabajo", "En una fiesta o evento social", "Durante una investigación", "En una situación violenta", "Fue observado durante meses sin saberlo"]], ["¿Por qué el Sire lo eligió?", ["Por su talento", "Por su posición social", "Por su belleza o carisma", "Por su conocimiento", "Por necesidad o accidente"]], ["¿Qué pensó la primera vez que vio algo sobrenatural?", ["Que estaba soñando", "Que era una amenaza", "Que debía entenderlo", "Que podía aprovecharlo", "Que había perdido la razón"]], ["¿Cómo ocurrió el Abrazo?", ["Fue atacado", "Aceptó una oferta", "Fue traicionado", "Participó en un ritual", "No recuerda bien lo ocurrido"]], ["¿Qué emoción predominó esa noche?", ["Miedo", "Rabia", "Curiosidad", "Tristeza", "Fascinación"]], ["¿Qué perdió al convertirse en vampiro?", ["Familia", "Pareja", "Trabajo", "Fe", "Identidad"]], ["¿Qué le enseñó primero su Sire?", ["Cómo alimentarse", "Cómo obedecer las Tradiciones", "Cómo ocultarse", "Cómo usar una Disciplina", "Cómo desconfiar de todos"]], ["¿Cómo reaccionó al hambre por primera vez?", ["Se horrorizó", "Intentó resistirse", "Perdió el control", "Lo aceptó rápidamente", "Buscó una forma segura de alimentarse"]], ["¿Cómo fue su primera cacería?", ["Torpe y peligrosa", "Planificada", "Violenta", "Seductora", "Guiada por su Sire"]], ["¿Qué pensaba de su clan en sus primeras noches?", ["Sentía orgullo", "Sentía miedo", "No entendía sus reglas", "Quería demostrar valor", "Desconfiaba de todos"]], ["¿Cuál es su objetivo actual?", ["Ganar estatus", "Resolver un misterio", "Vengarse", "Proteger a alguien", "Escapar del control de otros"]], ["¿Qué desea conseguir durante la crónica?", ["Poder político", "Conocimiento oculto", "Seguridad para su refugio", "Aliados confiables", "Una respuesta sobre su Abrazo"]], ["¿A quién protege todavía?", ["Un familiar mortal", "Una antigua pareja", "Un amigo", "Un protegido o alumno", "A nadie, aunque le duele"]], ["¿A quién odia o culpa por su situación?", ["A su Sire", "A otro vampiro", "A un mortal de su pasado", "A sí mismo", "A una organización secreta"]], ["¿Qué secreto guarda?", ["Mató a alguien", "Tiene una deuda peligrosa", "Ama a una persona mortal", "Fue Abrazado sin permiso", "Vio algo que no debía ver"]], ["¿Qué figura de la ciudad le preocupa más?", ["El Príncipe", "El Sheriff", "Un Primogénito", "Un Antiguo desconocido", "Un cazador mortal"]], ["¿Qué rumor circula sobre el personaje?", ["Tiene un secreto grave", "Está protegido por alguien poderoso", "Trabaja para otra facción", "Es peligroso cuando se enfada", "Sabe más de lo que dice"]], ["¿Cuál es su mayor debilidad emocional?", ["Orgullo", "Culpa", "Soledad", "Celos", "Miedo a perder el control"]], ["¿Qué podría hacerlo perder Humanidad?", ["Matar a un inocente", "Traicionar a alguien que confía en él", "Abandonar a su familia mortal", "Disfrutar demasiado del poder", "Convertir a otro en monstruo"]], ["¿Qué cree que ocurrirá en su futuro?", ["Será importante en la ciudad", "Será destruido por sus enemigos", "Descubrirá la verdad de su Abrazo", "Perderá lo poco humano que le queda", "Encontrará una forma de redimirse"]]];
+
+const BG_DESC = {
+ "Aliados": "Personas que están dispuestas a ayudarte cuando tienes problemas. Pueden ser amigos, antiguos compañeros, familiares leales o gente que te debe favores.",
+ "Contactos": "Personas que te entregan información útil. No necesariamente arriesgarán la vida por ti, pero saben cosas o conocen a alguien que sabe.",
+ "Recursos": "Dinero, propiedades, ingresos o acceso económico. Sirve para comprar comodidad, resolver problemas y evitar dormir bajo un puente gótico.",
+ "Mentor": "Alguien con más experiencia que puede guiarte, protegerte o enseñarte. También puede pedir favores incómodos.",
+ "Estatus": "Reconocimiento dentro de ciertos círculos. La gente sabe quién eres, te respeta o al menos finge hacerlo.",
+ "Fama": "Eres conocido por mortales o ciertos grupos. Puede abrir puertas, pero también hace más difícil pasar desapercibido.",
+ "Influencia": "Capacidad de mover instituciones o grupos importantes: política, policía, medios, empresas, universidades, etc.",
+ "Rebaño": "Personas de confianza o entorno estable que facilitan alimentarte con menos riesgo para la historia.",
+ "Criados": "Servidores, asistentes o ayudantes que trabajan para ti. Pueden ser leales, útiles o una fuente de problemas.",
+ "Refugio": "Un lugar seguro donde descansar, esconderse o guardar cosas importantes."
+};
+const TRAIT_DESC = {
+ "Sangre Fría": "Mantienes la calma incluso cuando todo sale mal. Ideal para personajes que no entran en pánico fácilmente.",
+ "Memoria Eidética": "Recuerdas detalles con gran precisión: nombres, rostros, textos, lugares o conversaciones importantes.",
+ "Carisma Natural": "Caes bien con facilidad. La gente tiende a escucharte, confiar en ti o al menos darte una oportunidad.",
+ "Sentidos Agudos": "Percibes detalles que otros pasan por alto: sonidos, olores, movimientos o cambios sutiles en el ambiente.",
+ "Suerte": "A veces las cosas simplemente salen a tu favor. No siempre, pero lo suficiente para que sea sospechoso.",
+ "Médium": "Puedes percibir o interactuar ocasionalmente con presencias espirituales. No siempre es cómodo.",
+ "Sueños Proféticos": "Tienes sueños o visiones que pueden anticipar eventos. El problema es entenderlos antes de que sea tarde.",
+ "Suerte Extraña": "Tu destino parece doblarse en momentos raros. A veces te salva; a veces te mete en una historia peor.",
+ "Ambidiestro": "Puedes usar ambas manos con habilidad. Útil para tareas delicadas, combate o escenas dramáticas.",
+ "Digestión Eficiente": "Tu cuerpo aprovecha mejor la sangre. Es un mérito práctico para sobrevivir mejor.",
+ "Mentor Protector": "Alguien poderoso o experimentado te protege y aconseja. Eso sí, probablemente espera obediencia o favores.",
+ "Contactos Útiles": "Tienes una red de personas que pueden entregarte datos, rumores o ayuda puntual.",
+ "Enemigo": "Alguien quiere perjudicarte activamente. Puede ser un mortal, un vampiro, una organización o una ex pareja con demasiado tiempo libre.",
+ "Secreto Oscuro": "Ocultas algo que podría destruir tu reputación, tus relaciones o tu seguridad si sale a la luz.",
+ "Mala Reputación": "Algunos ya tienen una mala opinión de ti. Puede ser justo, injusto o bastante merecido.",
+ "Timidez": "Te cuesta desenvolverte en situaciones sociales, especialmente bajo presión.",
+ "Deuda": "Le debes algo importante a alguien. Y esa persona probablemente lo recordará en el peor momento.",
+ "Aura Inquietante": "Hay algo en ti que incomoda a los demás, aunque no sepan explicar por qué.",
+ "Marcado por Espíritus": "Algo del mundo espiritual parece haberse fijado en ti. No necesariamente para bien.",
+ "Cicatriz Notoria": "Tienes una marca visible o reconocible que puede delatarte o hacerte memorable.",
+ "Cojo": "Tienes una dificultad física para moverte con normalidad.",
+ "Limitación Física": "Alguna condición física limita ciertas acciones del personaje.",
+ "Dependiente Mortal": "Una persona de tu vida anterior depende de ti. Protegerla puede generar conflictos.",
+ "Amor Perdido": "Hay una relación importante que perdiste, arruinaste o que todavía duele.",
+ "Rival Persistente": "Alguien compite contigo o busca superarte constantemente."
+};
+function descForBackground(name){ return BG_DESC[name] || "Trasfondo especial que representa un recurso útil para la historia."; }
+function descForTrait(name){ return TRAIT_DESC[name] || "Rasgo narrativo que modifica o define un aspecto importante del personaje."; }
+function infoCard(title, desc, example){
+  return '<div class="info-card"><b>'+title+'</b><br>'+desc+(example?'<div class="example">'+example+'</div>':'')+'</div>';
+}
+
+
+function freebieTotal(){
+  const meritCost = (S.merits || []).reduce((a,x)=>a + Number(x[2]||0),0);
+  const flawGain = (S.flaws || []).reduce((a,x)=>a + Number(x[2]||0),0);
+  return {base:30, meritCost, flawGain, total:30 - meritCost + flawGain};
+}
+function freebieText(){
+  const f = freebieTotal();
+  return "30 base - " + f.meritCost + " por Méritos + " + f.flawGain + " por Defectos = " + f.total + " puntos gratuitos";
+}
+
+let S = {name:"", playerName:"", sect:"", sectLabel:"", clan:"", clanDisplay:"", caitiffPackage:"Equilibrado", backgrounds:[], merits:[], flaws:[], story:"", narrator:"", freebieMode:"narrator", freebieSpent:0, freebieRemaining:0, freebieHumanity:0, freebieWillpower:0, freebieAllocations:[], freebieWarning:""};
+function el(id){return document.getElementById(id)}
+function show(id){el(id).classList.remove("hidden"); setTimeout(()=>el(id).scrollIntoView({behavior:"smooth"}),50)}
+function showProgressTools(){ /* Se eliminó la sección visible de guardar/cargar progreso. */ }
+function esc(s){return String(s??"").replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
+
+const SECT_OPTIONS = [
+  {key:"Sabbat", label:"Sabbat", text:"Aceptaría mi naturaleza. Si soy un depredador, no tiene sentido fingir que sigo siendo humano."},
+  {key:"Sabbat", label:"Sabbat", text:"Formaría una manada o comunidad de depredadores. Cazar juntos es más eficiente, más seguro y más poderoso."},
+  {key:"Camarilla", label:"Camarilla", text:"Me ocultaría entre los humanos. La supervivencia depende de no revelar lo que soy."},
+  {key:"Camarilla", label:"Camarilla", text:"No cazaría directamente. Construiría una red de influencia, sirvientes y contactos para que otros me consigan lo que necesito."},
+  {key:"Independientes", label:"Independientes", text:"No serviría a Príncipes ni manadas. Haría tratos solo cuando me convenga y cazaría según mis propias reglas."},
+  {key:"Caitiff", label:"Caitiff / Autarca", text:"No pertenezco a ninguna familia reconocida. Sobreviviría sin clan, sin protección y sin obedecer una bandera."}
+];
+function displayClanName(){ return S.clanDisplay || S.clan || ""; }
+function sectLabel(){ return S.sectLabel || S.sect || "Sin organización"; }
+function clanPoolBySect(){
+  if(S.sect==="Camarilla") return ["Brujah","Gangrel","Malkavian","Nosferatu","Toreador","Tremere","Ventrue"];
+  if(S.sect==="Sabbat") return ["Lasombra","Tzimisce","Brujah","Gangrel","Malkavian","Nosferatu","Toreador","Tremere","Ventrue"];
+  if(S.sect==="Independientes") return ["Assamita","Giovanni","Ravnos","Seguidores de Set"];
+  if(S.sect==="Caitiff") return ["Caitiff"];
+  return Object.keys(CLANS);
+}
+function applySectClanDisplay(){
+  if(S.sect==="Sabbat" && S.clan && !["Lasombra","Tzimisce"].includes(S.clan)) S.clanDisplay = S.clan + " antitribu";
+  else S.clanDisplay = S.clan;
+}
+function startSect(){
+  showProgressTools();
+  S.playerName = el("startPlayer")?.value.trim() || "";
+  S.name = el("startName")?.value.trim() || "Personaje sin nombre";
+  let box=el("sectQuestions");
+  box.innerHTML='<div class="question"><p><b>Si ya no fueras humano y tuvieras que cazar humanos para sobrevivir, ¿cómo lo harías?</b></p>'+SECT_OPTIONS.map((op,i)=>'<label class="option"><input type="radio" name="sectQ" value="'+i+'"> '+String.fromCharCode(65+i)+'. '+op.text+'<small>Resultado principal: '+op.label+'</small></label>').join('')+'</div>';
+  show("sectStep");
+}
+function calcSect(){
+  let r=document.querySelector('input[name="sectQ"]:checked');
+  if(!r){ alert("Debes responder la pregunta clave de organización antes de continuar."); return; }
+  const op=SECT_OPTIONS[Number(r.value)];
+  S.sect=op.key;
+  S.sectLabel=op.label;
+
+  // Caso especial: Caitiff no necesita test de clan, porque el resultado ya es no tener clan reconocido.
+  if(S.sect==="Caitiff"){
+    S.clan="Caitiff";
+    S.clanDisplay="Caitiff";
+    S.caitiffPackage=S.caitiffPackage||"Equilibrado";
+    applyCaitiffPackage();
+    el("sectResult").innerHTML=
+      '<h2>Organización sugerida</h2>'+
+      '<div class="result"><h2>'+op.label+'</h2>'+
+      '<p><b>Resultado especial:</b> Caitiff. El personaje no pertenece a ningún clan reconocido.</p>'+
+      caitiffPackageHTML()+
+      '</div>'+
+      '<button type="button" onclick="applyCaitiffPackage();startBg()">Continuar a Trasfondos</button>';
+    show("sectResult");
+    return;
+  }
+
+  // Para Camarilla, Sabbat o Independientes solo mostramos la organización.
+  // El clan exacto lo resolverá el Test de Clan siguiente.
+  el("sectResult").innerHTML=
+    '<h2>Organización sugerida</h2>'+
+    '<div class="result"><h2>'+op.label+'</h2>'+
+    '<p>Ahora el Test de Clan determinará qué clan encaja mejor dentro de esta organización.</p>'+
+    '</div>'+
+    '<button type="button" onclick="startClan()">Continuar al Test de Clan</button>';
+  show("sectResult");
+}
+function applyCaitiffPackage(){
+  const sel=el("caitiffPackageSelect");
+  const pkg=sel?sel.value:(S.caitiffPackage||"Equilibrado");
+  S.caitiffPackage=pkg;
+  CLANS.Caitiff.disc=[...(CAITIFF_PACKAGES[pkg]||CAITIFF_PACKAGES["Equilibrado"])] ;
+}
+function caitiffPackageHTML(){
+  if(S.clan!=="Caitiff") return "";
+  const opts=Object.keys(CAITIFF_PACKAGES).map(k=>'<option value="'+k+'" '+(S.caitiffPackage===k?'selected':'')+'>'+k+' — '+CAITIFF_PACKAGES[k].join(', ')+'</option>').join('');
+  return '<div class="question"><p><b>Disciplinas Caitiff</b></p><p>Como Caitiff no tienes Disciplinas de Clan fijas. Elige un paquete inicial equilibrado para jugar sin romper la lógica de V20.</p><select id="caitiffPackageSelect" onchange="applyCaitiffPackage()">'+opts+'</select></div>';
+}
+function startClan(){
+ showProgressTools();
+ if(!S.name) S.name = el("startName")?.value.trim() || "Personaje sin nombre";
+ if(!S.playerName) S.playerName = el("startPlayer")?.value.trim() || "";
+ if(!S.sect){ S.sect="Camarilla"; S.sectLabel="Camarilla"; }
+ let box=el("clanQuestions"); box.innerHTML='<div class="summary-mini"><b>Organización:</b> '+sectLabel()+'</div>';
+ Q.forEach((q,i)=>{let d=document.createElement("div"); d.className="question"; d.innerHTML="<p><b>"+(i+1)+". "+q[0]+"</b></p>"; q[1].forEach((op,j)=>{d.innerHTML += '<label class="option"><input type="radio" name="cq'+i+'" value="'+j+'"> '+op[0]+'</label>'}); box.appendChild(d)});
+ show("stepClan");
+}
+function calcClan(){
+ let scores={}; Object.keys(CLANS).forEach(c=>scores[c]=0);
+ for(let i=0;i<Q.length;i++){let r=document.querySelector('input[name="cq'+i+'"]:checked'); if(!r){alert("Falta responder la pregunta "+(i+1)); return} Q[i][1][Number(r.value)][1].forEach((c,idx)=>scores[c]+=idx==0?2:1)}
+ let pool=clanPoolBySect();
+ let sorted=Object.entries(scores).filter(([clan])=>pool.includes(clan)).sort((a,b)=>b[1]-a[1]);
+ if(S.sect==="Caitiff") sorted=[["Caitiff",999]];
+ if(!sorted.length) sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+ S.clan=sorted[0][0];
+ if(S.clan==="Caitiff") applyCaitiffPackage();
+ applySectClanDisplay();
+ let c=CLANS[S.clan];
+ let otros=sorted.slice(1,3).map(x=>S.sect==="Sabbat" && !["Lasombra","Tzimisce"].includes(x[0])?x[0]+" antitribu":x[0]).join(', ') || "Sin resultados secundarios";
+ el("clanResult").innerHTML='<h2>Resultado del clan</h2><div class="result"><div class="logo">'+c.icon+'</div><h2>'+displayClanName()+'</h2><p><b>Organización:</b> '+sectLabel()+'</p><p>'+c.desc+'</p><p><b>Disciplinas:</b> '+c.disc.map(x=>'<span class="pill">'+x+'</span>').join("")+'</p><p><b>Debilidad:</b> '+c.weak+'</p><p>Otros resultados dentro de esta organización: '+otros+'</p>'+caitiffPackageHTML()+'</div><button type="button" onclick="if(S.clan===\'Caitiff\')applyCaitiffPackage();startBg()">Continuar a Trasfondos</button>';
+ show("clanResult");
+}
+function startBg(){
+ let box=el("bgQuestions"); 
+ box.innerHTML="";
+ BGQ.forEach((q,i)=>{
+   let d=document.createElement("div"); 
+   d.className="question"; 
+   d.innerHTML="<p><b>"+(i+1)+". "+q[0]+"</b></p>"; 
+   q[1].forEach((op,j)=>{
+     d.innerHTML+='<label class="option"><input type="radio" name="bq'+i+'" value="'+op[1]+'"> '+op[0]+'<small>'+descForBackground(op[1])+'</small></label>';
+   }); 
+   box.appendChild(d)
+ }); 
+ show("bgStep")
+}
+function calcBg(){
+ let arr=[];
+ const allBackgrounds=["Aliados","Contactos","Recursos","Mentor","Estatus","Fama","Influencia","Rebaño","Criados","Refugio"];
+
+ for(let i=0;i<BGQ.length;i++){
+   let r=document.querySelector('input[name="bq'+i+'"]:checked');
+   if(!r){alert("Falta responder la pregunta de Trasfondos "+(i+1)); return}
+   if(!arr.includes(r.value)) arr.push(r.value);
+ }
+
+ // Si alguna respuesta se repite, el sistema completa automáticamente
+ // con otros Trasfondos disponibles, hasta llegar exactamente a 3.
+ while(arr.length < 3){
+   let available = allBackgrounds.filter(x => !arr.includes(x));
+   if(!available.length) break;
+   let picked = available[Math.floor(Math.random()*available.length)];
+   arr.push(picked);
+ }
+
+ // Seguridad final: nunca más de 3.
+ S.backgrounds = arr.slice(0,3);
+
+ el("bgResult").innerHTML=
+   '<h2>Trasfondos sugeridos</h2>'+
+   '<div class="result">'+
+   '<p>El personaje tendrá exactamente <b>3 Trasfondos distintos</b>. Si alguna respuesta se repitió, el sistema completó automáticamente el faltante.</p>'+
+   S.backgrounds.map(x=>infoCard(x, descForBackground(x), "Ejemplo: úsalo como recurso narrativo cuando el personaje necesite ayuda, información o protección.")).join("")+
+   '</div>'+
+   '<button type="button" onclick="startMerits()">Continuar</button>';
+ show("bgResult");
+}
+function startMerits(){
+ let box=el("meritQuestions"); 
+ box.innerHTML="";
+ MQ.forEach((q,i)=>{
+   let d=document.createElement("div"); 
+   d.className="question"; 
+   d.innerHTML="<p><b>"+(i+1)+". "+q[0]+"</b></p>"; 
+   q[1].forEach((op,j)=>{
+     d.innerHTML+='<label class="option"><input type="radio" name="mq'+i+'" value="'+encodeURIComponent(JSON.stringify(op))+'"> '+op[0]+' ('+(op[1]=="merit"?"Mérito":"Defecto")+', '+op[2]+' pts)<small>'+descForTrait(op[0])+'</small></label>';
+   }); 
+   box.appendChild(d)
+ }); 
+ show("meritStep")
+}
+function calcMerits(){let chosen=[]; for(let i=0;i<MQ.length;i++){let r=document.querySelector('input[name="mq'+i+'"]:checked'); if(!r){alert("Falta mérito/defecto "+(i+1)); return} chosen.push(JSON.parse(decodeURIComponent(r.value)))} let flaws=chosen.filter(x=>x[1]=="flaw"); let merits=chosen.filter(x=>x[1]=="merit"); S.flaws=flaws.slice(0,1); S.merits=merits.slice(0,2); let all=[...S.merits,...S.flaws]; 
+ el("meritResult").innerHTML=
+ '<h2>Rasgos sugeridos</h2>'+
+ '<div class="result">'+
+ '<p>Estos rasgos ayudan a darle personalidad y problemas interesantes al personaje.</p>'+
+ all.map(x=>infoCard((x[1]=="merit"?"Mérito: ":"Defecto: ")+x[0]+" ("+x[2]+" pts)", descForTrait(x[0]), x[1]=="merit"?"Ventaja útil para ciertas escenas.":"Problema narrativo que puede complicar la historia.")).join("")+
+ '</div><button type="button" onclick="renderSheet()">Crear hoja</button>'; 
+ show("meritResult")
+}
+function priA(){return '<option value="Físicos,Sociales,Mentales">Físicos 7 / Sociales 5 / Mentales 3</option><option value="Físicos,Mentales,Sociales">Físicos 7 / Mentales 5 / Sociales 3</option><option value="Sociales,Físicos,Mentales">Sociales 7 / Físicos 5 / Mentales 3</option><option value="Sociales,Mentales,Físicos">Sociales 7 / Mentales 5 / Físicos 3</option><option value="Mentales,Físicos,Sociales">Mentales 7 / Físicos 5 / Sociales 3</option><option value="Mentales,Sociales,Físicos">Mentales 7 / Sociales 5 / Físicos 3</option>'}
+function priB(){return '<option value="Talentos,Técnicas,Conocimientos">Talentos 13 / Técnicas 9 / Conocimientos 5</option><option value="Talentos,Conocimientos,Técnicas">Talentos 13 / Conocimientos 9 / Técnicas 5</option><option value="Técnicas,Talentos,Conocimientos">Técnicas 13 / Talentos 9 / Conocimientos 5</option><option value="Técnicas,Conocimientos,Talentos">Técnicas 13 / Conocimientos 9 / Talentos 5</option><option value="Conocimientos,Talentos,Técnicas">Conocimientos 13 / Talentos 9 / Técnicas 5</option><option value="Conocimientos,Técnicas,Talentos">Conocimientos 13 / Técnicas 9 / Talentos 5</option>'}
+function traitBox(title, arr, cls, base){
+  return '<div class="box"><h3>'+title+'</h3>'+arr.map(n=>{
+    let minVal = base;
+    let readonly = cls==="disc" ? " readonly" : "";
+    let extraStyle = cls==="disc" ? ' style="background:#eee;color:#555"' : "";
+    return '<div class="traitline"><span>'+n+'</span><input class="'+cls+'" data-group="'+title.replace("Atributos ","")+'" data-name="'+n+'" data-base="'+base+'" type="number" min="'+minVal+'" max="5" value="'+base+'" oninput="clamp(this);updateAll()"'+readonly+extraStyle+'></div>';
+  }).join("")+'</div>';
+}
+function renderSheet(){let c=CLANS[S.clan]; let clanShown=displayClanName(); let meritText=[...S.merits,...S.flaws].map(x=>(x[1]=="merit"?"Mérito: ":"Defecto: ")+x[0]+" ("+x[2]+" pts)").join("\n"); el("sheetBuilder").innerHTML='<div class="no-print"><div class="grid"><div><label>Prioridad Atributos</label><select id="attrP" onchange="autoAssignAll();updateAll()">'+priA()+'</select></div><div><label>Prioridad Habilidades</label><select id="abilP" onchange="autoAssignAll();updateAll()">'+priB()+'</select></div></div><button type="button" onclick="autoAssignAll();updateAll()">Reasignar puntos aleatoriamente</button><div id="trackers" class="tracker"></div><div id="warnings" class="warn"></div></div><div class="sheet"><h2>Hoja de Personaje V20</h2><div class="basic-grid"><div><label>Nombre</label><input id="name" value="'+esc(S.name)+'"></div><div><label>Jugador</label><input id="player" value="'+esc(S.playerName||'')+'"></div><div><label>Crónica</label><input id="chronicle"></div><div><label>Clan</label><input id="clan" value="'+esc(clanShown)+'" readonly></div><div><label>Concepto</label><input id="concept"></div><div><label>Naturaleza</label><input id="nature"></div><div><label>Conducta</label><input id="demeanor"></div><div><label>Generación</label><input id="generation"></div></div><div class="box"><div class="logo">'+c.icon+'</div><b>'+esc(clanShown)+'</b> — '+c.disc.join(", ")+'<br><b>Organización:</b> '+esc(sectLabel())+'</div><div class="summary-mini"><b>Resumen rápido:</b><br><b>Trasfondos:</b> '+S.backgrounds.map(x=>x+" — "+descForBackground(x)).join("<br>")+'<br><br><b>Rasgos:</b><br>'+[...S.merits,...S.flaws].map(x=>(x[1]=="merit"?"Mérito: ":"Defecto: ")+x[0]+" — "+descForTrait(x[0])).join("<br>")+'</div><div class="sheet-grid">'+Object.entries(ATTRS).map(([g,a])=>traitBox("Atributos "+g,a,"attr",1)).join("")+'</div><div class="sheet-grid">'+Object.entries(ABIL).map(([g,a])=>traitBox(g,a,"abil",0)).join("")+'</div><div class="sheet-grid">'+traitBox("Disciplinas",c.disc,"disc",1)+traitBox("Trasfondos",S.backgrounds,"bg",0)+traitBox("Virtudes",VIRT,"virt",1)+'</div><div class="sheet-grid-2"><div class="box"><h3>Valores</h3><div class="traitline"><span>Humanidad</span><input id="humanity" readonly></div><div class="traitline"><span>F. Voluntad</span><input id="willpower" type="number" min="1" max="10" value="1" readonly style="background:#eee;color:#555"></div><div class="traitline"><span>Sangre</span><input id="blood"></div><div class="traitline"><span>Gratuitos usados</span><input id="freeUsed" readonly></div></div><div class="box"><h3>Méritos/Defectos</h3><textarea id="merits" rows="5">'+esc(meritText)+'</textarea></div></div><div class="box"><h3>Notas</h3><textarea id="notes" rows="3"></textarea></div></div><div class="no-print"><button type="button" onclick="continueStory()">Continuar</button></div>'; show("sheetStep"); autoAssignAll(); updateAll()}
+function clamp(e){
+  if(e.classList.contains("disc")){ e.value=1; return; }
+  let minVal = Number(e.dataset.base || 0);
+  if(e.classList.contains("bg")) minVal = 1;
+  if(+e.value>5)e.value=5;
+  if(+e.value<minVal)e.value=minVal;
+  enforceGroupLimit(e);
+}
+function sum(sel,grp){let t=0;document.querySelectorAll(sel).forEach(e=>{if(!grp||e.dataset.group==grp)t+=Math.max(0,+e.value-+e.dataset.base)});return t}
+
+function randInt(max){return Math.floor(Math.random()*max)}
+function shuffle(arr){let a=[...arr];for(let i=a.length-1;i>0;i--){let j=randInt(i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
+function distributePoints(inputs, total, base, maxVal){
+  inputs.forEach(e=>e.value=base);
+  let remaining=total;
+  let safety=1000;
+  while(remaining>0 && safety-- > 0){
+    let available=inputs.filter(e=>Number(e.value)<maxVal);
+    if(!available.length) break;
+    let e=available[randInt(available.length)];
+    e.value=Number(e.value)+1;
+    remaining--;
+  }
+}
+function autoAssignGroup(selector, groupName, points, base){
+  const inputs=[...document.querySelectorAll(selector)].filter(e=>e.dataset.group===groupName);
+  distributePoints(inputs, points, base, 5);
+}
+function autoAssignAll(){
+  const attrOrder=(el("attrP")?.value||"Físicos,Sociales,Mentales").split(",");
+  const abilOrder=(el("abilP")?.value||"Talentos,Técnicas,Conocimientos").split(",");
+  const attrPts={[attrOrder[0]]:7,[attrOrder[1]]:5,[attrOrder[2]]:3};
+  const abilPts={[abilOrder[0]]:13,[abilOrder[1]]:9,[abilOrder[2]]:5};
+  Object.keys(ATTRS).forEach(g=>autoAssignGroup(".attr",g,attrPts[g],1));
+  Object.keys(ABIL).forEach(g=>autoAssignGroup(".abil",g,abilPts[g],0));
+  distributePoints([...document.querySelectorAll(".virt")],7,1,5);
+  distributePoints([...document.querySelectorAll(".bg")],2,1,5);
+}
+function enforceGroupLimit(changed){
+  if(!changed) return;
+
+  let selector=null, group=null, limit=null, base=0;
+
+  if(changed.classList.contains("attr")){
+    selector=".attr";
+    group=changed.dataset.group;
+    const order=(el("attrP")?.value||"Físicos,Sociales,Mentales").split(",");
+    const limits={[order[0]]:7,[order[1]]:5,[order[2]]:3};
+    limit=limits[group];
+    base=1;
+  } else if(changed.classList.contains("abil")){
+    selector=".abil";
+    group=changed.dataset.group;
+    const order=(el("abilP")?.value||"Talentos,Técnicas,Conocimientos").split(",");
+    const limits={[order[0]]:13,[order[1]]:9,[order[2]]:5};
+    limit=limits[group];
+    base=0;
+  } else if(changed.classList.contains("virt")){
+    selector=".virt";
+    group=null;
+    limit=7;
+    base=1;
+  } else if(changed.classList.contains("bg")){
+    selector=".bg";
+    group=null;
+    limit=2;
+    base=1;
+  } else {
+    return;
+  }
+
+  const inputs=[...document.querySelectorAll(selector)].filter(e=>group===null || e.dataset.group===group);
+  let used=inputs.reduce((a,e)=>a+Math.max(0,Number(e.value)-base),0);
+  if(used>limit){
+    const excess=used-limit;
+    changed.value=Math.max(base,Number(changed.value)-excess);
+  }
+}
+
+
+function updateAll(){
+ let ao=(el("attrP")?.value||"Físicos,Sociales,Mentales").split(",");
+ let bo=(el("abilP")?.value||"Talentos,Técnicas,Conocimientos").split(",");
+ let ap={[ao[0]]:7,[ao[1]]:5,[ao[2]]:3};
+ let bp={[bo[0]]:13,[bo[1]]:9,[bo[2]]:5};
+ let warns=[], free=0, lines=[];
+ Object.keys(ATTRS).forEach(g=>{
+   let u=sum(".attr",g);
+   let status = u===ap[g] ? "validline" : "errorline";
+   lines.push(`<span class="${status}">Atributos ${g}: ${u} / ${ap[g]}</span>`);
+   if(u<ap[g]) warns.push("Atributos "+g+": faltan "+(ap[g]-u)+" puntos.");
+   if(u>ap[g]) warns.push("Atributos "+g+": sobran "+(u-ap[g])+" puntos.");
+ });
+ Object.keys(ABIL).forEach(g=>{
+   let u=sum(".abil",g);
+   let status = u===bp[g] ? "validline" : "errorline";
+   lines.push(`<span class="${status}">Habilidades ${g}: ${u} / ${bp[g]}</span>`);
+   if(u<bp[g]) warns.push("Habilidades "+g+": faltan "+(bp[g]-u)+" puntos.");
+   if(u>bp[g]) warns.push("Habilidades "+g+": sobran "+(u-bp[g])+" puntos.");
+ });
+ let ve=sum(".virt");
+ lines.push(`<span class="${ve===7?"validline":"errorline"}">Virtudes: ${ve} / 7</span>`);
+ if(ve<7)warns.push("Virtudes: faltan "+(7-ve)+" puntos.");
+ if(ve>7)warns.push("Virtudes: sobran "+(ve-7)+" puntos.");
+
+ let bgInputs=[...document.querySelectorAll(".bg")];
+ let bgFinal=bgInputs.reduce((a,e)=>a+Number(e.value||0),0);
+ lines.push(`<span class="${bgFinal===5?"validline":"errorline"}">Trasfondos: ${bgFinal} / 5</span>`);
+ if(bgFinal<5)warns.push("Trasfondos: faltan "+(5-bgFinal)+" puntos.");
+ if(bgFinal>5)warns.push("Trasfondos: sobran "+(bgFinal-5)+" puntos.");
+
+
+ let con=+document.querySelector('[data-name="Conciencia"]')?.value||1;
+ let au=+document.querySelector('[data-name="Autocontrol"]')?.value||1;
+ let co=+document.querySelector('[data-name="Coraje"]')?.value||1;
+ if(el("humanity"))el("humanity").value=Math.min(10, con+au+(Number(S.freebieHumanity)||0));
+ if(el("willpower"))el("willpower").value=Math.min(10, co+(Number(S.freebieWillpower)||0));
+ if(el("freeUsed"))el("freeUsed").value=(S.freebieMode==="manual" ? (Number(S.freebieSpent||0)+" usados / "+Number(S.freebieRemaining||0)+" exp") : (freebieTotal().total+" disponibles"));
+ if(el("trackers"))el("trackers").innerHTML=lines.join("<br>")+`<br><b>Puntos gratuitos:</b> después podrás elegir Narrador o asignación manual. <b>${freebieText()}</b><br><span class="auto-note">Al cambiar prioridad, los puntos iniciales se asignan automáticamente. Puedes moverlos manualmente, pero antes de continuar cada grupo inicial debe quedar exacto.</span>`;
+ if(el("warnings"))el("warnings").innerHTML=warns.length?warns.join("<br>"):"Sin advertencias.";
+}
+
+function getFreebieBudget(){ return freebieTotal().total; }
+function freebieCostFor(type){
+  return {attr:5, abil:2, disc:7, bg:2, virt:5, humanity:1, willpower:1}[type] || 0;
+}
+function freebieTypeLabel(type){
+  return {attr:"Atributo", abil:"Habilidad", disc:"Disciplina", bg:"Trasfondo", virt:"Virtud", humanity:"Humanidad", willpower:"Fuerza de Voluntad"}[type] || type;
+}
+function updateFreebieHeader(){
+  const f=freebieTotal();
+  const label=el("freebieAvailableLabel");
+  if(label) label.innerHTML="Puntos disponibles: "+f.total+" — "+freebieText();
+  const meritBox=el("freebieMeritCostBox"); if(meritBox) meritBox.textContent=f.meritCost;
+  const flawBox=el("freebieFlawGainBox"); if(flawBox) flawBox.textContent=f.flawGain;
+  const totalBox=el("freebieTotalBox"); if(totalBox) totalBox.textContent=f.total;
+}
+function getInputByTypeAndName(type,name){
+  const selector = type==="attr"?".attr":type==="abil"?".abil":type==="disc"?".disc":type==="bg"?".bg":type==="virt"?".virt":null;
+  if(!selector) return null;
+  return [...document.querySelectorAll(selector)].find(e=>e.dataset.name===name) || null;
+}
+function currentDerivedHumanity(){
+  const con=+document.querySelector('[data-name="Conciencia"]')?.value||1;
+  const au=+document.querySelector('[data-name="Autocontrol"]')?.value||1;
+  return Math.min(10, con+au+(Number(S.freebieHumanity)||0));
+}
+function currentDerivedWillpower(){
+  const co=+document.querySelector('[data-name="Coraje"]')?.value||1;
+  return Math.min(10, co+(Number(S.freebieWillpower)||0));
+}
+function freebieRow(type,name,current,max=5){
+  const maxAdd=Math.max(0, Number(max)-Number(current));
+  return '<div class="traitline"><span>'+freebieTypeLabel(type)+': '+esc(name)+' <small>Actual '+current+' / Costo '+freebieCostFor(type)+'</small></span><input class="freebieAdd" data-type="'+type+'" data-name="'+esc(name)+'" data-cost="'+freebieCostFor(type)+'" type="number" min="0" max="'+maxAdd+'" value="0" oninput="clampFreebieInput(this);updateFreebieManual()"></div>';
+}
+function freebieSectionHTML(title, rows){
+  if(!rows.length) return '';
+  return '<div class="freebie-manual-card"><h3>'+title+'</h3>'+rows.join('')+'</div>';
+}
+function chooseNarratorFreebies(){
+  S.freebieMode="narrator";
+  S.freebieSpent=0;
+  S.freebieRemaining=getFreebieBudget();
+  S.freebieHumanity=0;
+  S.freebieWillpower=0;
+  S.freebieAllocations=[];
+  updateAll();
+  show("storyAsk");
+}
+function chooseManualFreebies(){
+  updateFreebieHeader();
+  const manual=el("manualFreebieBox");
+  if(manual) manual.classList.remove("hidden");
+  renderFreebieManual();
+}
+function renderFreebieManual(){
+  const groups=[];
+  Object.keys(ATTRS).forEach(g=>{
+    let rows=ATTRS[g].map(n=>{let e=getInputByTypeAndName("attr",n);return freebieRow("attr",n,Number(e?.value||1),5)});
+    groups.push(freebieSectionHTML("Atributos — "+g, rows));
+  });
+  Object.keys(ABIL).forEach(g=>{
+    let rows=ABIL[g].map(n=>{let e=getInputByTypeAndName("abil",n);return freebieRow("abil",n,Number(e?.value||0),5)});
+    groups.push(freebieSectionHTML("Habilidades — "+g, rows));
+  });
+  const discRows=[...document.querySelectorAll(".disc")].map(e=>freebieRow("disc",e.dataset.name,Number(e.value||1),5));
+  const bgRows=[...document.querySelectorAll(".bg")].map(e=>freebieRow("bg",e.dataset.name,Number(e.value||1),5));
+  const virtRows=[...document.querySelectorAll(".virt")].map(e=>freebieRow("virt",e.dataset.name,Number(e.value||1),5));
+  groups.push(freebieSectionHTML("Ventajas — Disciplinas", discRows));
+  groups.push(freebieSectionHTML("Ventajas — Trasfondos", bgRows));
+  groups.push(freebieSectionHTML("Ventajas — Virtudes", virtRows));
+  groups.push(freebieSectionHTML("Humanidad y Fuerza de Voluntad", [
+    freebieRow("humanity","Humanidad", currentDerivedHumanity(), 10),
+    freebieRow("willpower","Fuerza de Voluntad", currentDerivedWillpower(), 10)
+  ]));
+  const builder=el("freebieManualBuilder");
+  if(builder) builder.innerHTML='<div class="freebie-grid">'+groups.join('')+'</div>';
+  updateFreebieManual();
+}
+function calculateManualFreebieSpend(){
+  let spent=0;
+  let lines=[];
+  document.querySelectorAll(".freebieAdd").forEach(e=>{
+    const add=Number(e.value||0);
+    const cost=Number(e.dataset.cost||0);
+    if(add>0){
+      const total=add*cost;
+      spent += total;
+      lines.push("+"+add+" "+freebieTypeLabel(e.dataset.type)+" — "+e.dataset.name+" = "+total+" pts");
+    }
+  });
+  return {spent, lines};
+}
+function clampFreebieInput(e){
+  const min=Number(e.min||0), max=Number(e.max||0);
+  let v=Number(e.value||0);
+  if(!Number.isFinite(v)) v=0;
+  if(v<min) v=min;
+  if(v>max) v=max;
+  e.value=v;
+
+  const budget=getFreebieBudget();
+  const cost=Number(e.dataset.cost||0);
+  if(cost<=0) return;
+
+  let spentWithoutThis=0;
+  document.querySelectorAll(".freebieAdd").forEach(other=>{
+    if(other===e) return;
+    spentWithoutThis += Number(other.value||0) * Number(other.dataset.cost||0);
+  });
+
+  const affordable=Math.max(0, Math.floor((budget-spentWithoutThis)/cost));
+  if(Number(e.value)>affordable){
+    e.value=Math.min(max, affordable);
+    S.freebieWarning="Se ajustó la última selección para no superar los puntos disponibles. La experiencia nunca puede quedar negativa.";
+  } else {
+    S.freebieWarning="";
+  }
+}
+function updateFreebieManual(){
+  const budget=getFreebieBudget();
+  const calc=calculateManualFreebieSpend();
+  const spent=Math.min(calc.spent, budget);
+  const lines=calc.lines;
+  const remaining=Math.max(0, budget-spent);
+  const tracker=el("freebieManualTracker");
+  if(tracker){
+    tracker.innerHTML =
+      '<div class="freebie-kpis">'+
+      '<div class="freebie-kpi"><span>Disponibles</span><b>'+budget+'</b><small>puntos</small></div>'+
+      '<div class="freebie-kpi"><span>Usados</span><b>'+spent+'</b><small>puntos</small></div>'+
+      '<div class="freebie-kpi"><span>Experiencia inicial</span><b>'+remaining+'</b><small>sobrante</small></div>'+
+      '</div>'+
+      (lines.length?'<b class="freebie-spend-title">Resumen de compra:</b>'+lines.map(x=>'<span class="freebie-summary-line">'+esc(x)+'</span>').join('<br>'):'<span class="auto-note">Aún no has gastado puntos. Puedes continuar dejando todo como Experiencia inicial.</span>')+
+      (S.freebieWarning?'<br><span class="errorline">'+esc(S.freebieWarning)+'</span>':'<br><span class="auto-note">El sobrante aparecerá como Experiencia inicial en la ficha impresa. El sistema no permite valores negativos.</span>');
+  }
+  const btn=el("applyManualFreebieBtn");
+  if(btn) btn.disabled = false;
+}
+function applyManualFreebies(){
+  updateFreebieManual();
+  const budget=getFreebieBudget();
+  let spent=0, humAdd=0, willAdd=0;
+  let allocations=[];
+  document.querySelectorAll(".freebieAdd").forEach(e=>{
+    const add=Number(e.value||0);
+    const type=e.dataset.type;
+    const name=e.dataset.name;
+    const cost=Number(e.dataset.cost||0);
+    if(add<=0) return;
+    spent += add*cost;
+    allocations.push({type, name, add, cost, total:add*cost});
+  });
+  if(spent>budget){
+    alert("El sistema ajustó o bloqueó la selección porque no puedes gastar más puntos gratuitos que los disponibles.");
+    renderFreebieManual();
+    return;
+  }
+
+  allocations.forEach(a=>{
+    if(a.type==="humanity") humAdd += a.add;
+    else if(a.type==="willpower") willAdd += a.add;
+    else {
+      const target=getInputByTypeAndName(a.type,a.name);
+      if(target) target.value=Math.min(5, Number(target.value||0)+a.add);
+    }
+  });
+
+  S.freebieMode="manual";
+  S.freebieSpent=spent;
+  S.freebieRemaining=Math.max(0, budget-spent);
+  S.freebieHumanity=humAdd;
+  S.freebieWillpower=willAdd;
+  S.freebieAllocations=allocations;
+  updateAll();
+  show("storyAsk");
+}
+function continueStory(){
+ updateAll();
+ if(el("warnings") && el("warnings").textContent.trim() !== "Sin advertencias."){
+   alert("Antes de continuar, los puntos iniciales deben quedar exactos en cada grupo.");
+   return;
+ }
+ updateFreebieHeader();
+ show("freebieStep");
+}
+function startStory(){let box=el("storyQuestions");box.innerHTML="";STORY.forEach((q,i)=>{let d=document.createElement("div");d.className="question";d.innerHTML="<p><b>"+(i+1)+". "+q[0]+"</b></p>";q[1].forEach(op=>d.innerHTML+='<label class="option"><input type="radio" name="hq'+i+'" value="'+op+'"> '+op+'</label>');box.appendChild(d)});show("storyStep")}
+function generateStory(){
+ let a=[];
+ for(let i=0;i<STORY.length;i++){
+   let r=document.querySelector('input[name="hq'+i+'"]:checked');
+   if(!r){alert("Falta responder la pregunta de historia "+(i+1));return}
+   a.push(r.value);
+ }
+ let name=el("name").value||S.name;
+ let c=CLANS[S.clan];
+ S.story =
+ name+" nació o creció en "+a[0]+". Su infancia fue "+a[1].toLowerCase()+", y su relación con la familia era "+a[2].toLowerCase()+". Antes del Abrazo se dedicaba a ser "+a[3].toLowerCase()+". Su mayor sueño era "+a[4].toLowerCase()+", pero vivía con el miedo de "+a[5].toLowerCase()+". La persona más importante de su vida era "+a[6].toLowerCase()+".\\n\\n"+
+ "Su destino cambió cuando "+a[7].toLowerCase()+". Frente a la autoridad, normalmente "+a[8].toLowerCase()+", aunque ocultaba una parte importante de sí mismo: "+a[9].toLowerCase()+".\\n\\n"+
+ "Conoció a su Sire "+a[10].toLowerCase()+". Fue elegido por "+a[11].toLowerCase()+". La primera vez que vio algo sobrenatural pensó "+a[12].toLowerCase()+". El Abrazo ocurrió de esta manera: "+a[13].toLowerCase()+". Esa noche predominó "+a[14].toLowerCase()+", y al despertar como vampiro perdió "+a[15].toLowerCase()+".\\n\\n"+
+ "Durante sus primeras noches, su Sire le enseñó "+a[16].toLowerCase()+". Cuando sintió hambre por primera vez, "+a[17].toLowerCase()+". Su primera cacería fue "+a[18].toLowerCase()+". Al conocer mejor a su clan, "+a[19].toLowerCase()+". Ahora pertenece al clan "+displayClanName()+", dentro de la organización "+sectLabel()+", marcado por sus Disciplinas: "+c.disc.join(", ")+".\\n\\n"+
+ "En la actualidad, su objetivo principal es "+a[20].toLowerCase()+". Durante la crónica desea conseguir "+a[21].toLowerCase()+". Todavía protege a "+a[22].toLowerCase()+", pero culpa o desprecia a "+a[23].toLowerCase()+". Guarda un secreto peligroso: "+a[24].toLowerCase()+".\\n\\n"+
+ "En la ciudad le preocupa especialmente "+a[25].toLowerCase()+". Entre los Vástagos circula el rumor de que "+a[26].toLowerCase()+". Su mayor debilidad emocional es "+a[27].toLowerCase()+". Podría perder Humanidad si llega a "+a[28].toLowerCase()+". En el fondo cree que su futuro será este: "+a[29].toLowerCase()+".";
+ S.narrator =
+ "NOTAS DEL JUGADOR:\\n"+
+ "- Clan: "+S.clan+"\\n"+
+ "- Disciplinas: "+c.disc.join(", ")+"\\n"+
+ "- Persona mortal importante: "+a[6]+"\\n"+
+ "- Error que cambió su destino: "+a[7]+"\\n"+
+ "- Motivo del Abrazo: "+a[11]+"\\n"+
+ "- Pérdida principal: "+a[15]+"\\n"+
+ "- Objetivo actual: "+a[20]+"\\n"+
+ "- Persona protegida: "+a[22]+"\\n"+
+ "- Enemigo o culpable: "+a[23]+"\\n"+
+ "- Secreto peligroso: "+a[24]+"\\n"+
+ "- Figura de la ciudad que genera tensión: "+a[25]+"\\n"+
+ "- Rumor social: "+a[26]+"\\n"+
+ "- Riesgo de pérdida de Humanidad: "+a[28]+"\\n"+
+ "- Posible destino trágico: "+a[29];
+ showFinal(true)
+}
+
+
+const DISC_DESC_SIMPLE = {
+ "Auspex": ["Sentidos agudos: percibe detalles, sonidos, olores y señales sutiles.", "Percepción del aura: lee emociones o estados generales de otros.", "Toque espiritual: obtiene impresiones de objetos o lugares importantes.", "Proyección mental: puede separar su mente del cuerpo y observar a distancia.", "Visiones profundas: accede a percepciones sobrenaturales muy poderosas."],
+ "Dominación": ["Orden simple: da una instrucción breve que otro puede obedecer.", "Implantar orden: deja una instrucción que se activa después.", "Modificar recuerdos: altera o borra recuerdos de otra persona.", "Control directo: toma control de las acciones de alguien por un tiempo.", "Control profundo: domina la voluntad de otro con gran fuerza."],
+ "Taumaturgia": ["Magia de sangre básica: pequeños efectos rituales o control inicial de la sangre.", "Poder de sangre intermedio: efectos más útiles y peligrosos.", "Rituales complejos: manipulación sobrenatural más amplia.", "Hechicería avanzada: efectos potentes que pueden cambiar una escena.", "Dominio de la sangre: magia vampírica de gran poder y riesgo."],
+ "Celeridad": ["Reflejos rápidos.", "Movimiento veloz.", "Acciones rápidas en combate.", "Velocidad casi imposible.", "Rapidez sobrenatural extrema."],
+ "Potencia": ["Fuerza superior.", "Golpes muy poderosos.", "Proezas físicas imposibles.", "Fuerza devastadora.", "Poder físico monstruoso."],
+ "Presencia": ["Atrae atención.", "Inspira respeto, deseo o miedo.", "Domina una sala socialmente.", "Provoca devoción o terror.", "Presencia casi irresistible."],
+ "Animalismo": ["Comunicación básica con animales.", "Calma o llama criaturas.", "Toca la Bestia interior.", "Proyecta impulsos bestiales.", "Control profundo de instintos."],
+ "Fortaleza": ["Resiste daño.", "Soporta heridas graves.", "Aguanta castigos extremos.", "Difícil de destruir.", "Resistencia casi legendaria."],
+ "Protean": ["Sentidos depredadores.", "Garras o rasgos animales.", "Adaptación salvaje.", "Transformación profunda.", "Forma depredadora avanzada."],
+ "Dementación": ["Inquieta emociones.", "Provoca confusión.", "Rompe certezas mentales.", "Induce locura o revelación.", "Caos mental profundo."],
+ "Ofuscación": ["Pasa desapercibido.", "Se oculta estando cerca.", "Disfraza su presencia.", "Desaparece de la atención.", "Oculta a otros."],
+ "Extinción": ["Precisión letal.", "Daño especializado.", "Ataques silenciosos.", "Caza refinada.", "Letalidad casi perfecta."],
+ "Nigromancia": ["Percibe ecos de los muertos.", "Interactúa con espíritus.", "Ordena presencias fantasmales.", "Usa poder de los muertos.", "Dominio sobre muerte y fantasmas."],
+ "Obtenebración": ["Sombras menores.", "Oscuridad densa.", "Sombras como arma.", "Oscuridad tangible.", "Dominio de sombras vivas."],
+ "Quimerismo": ["Ilusiones simples.", "Engaño sensorial.", "Fantasías convincentes.", "Ilusiones intensas.", "Engaños casi reales."],
+ "Serpentis": ["Mirada hipnótica.", "Rasgos serpentinos.", "Miedo o deseo corruptor.", "Transformación profunda.", "Poder simbólico de la serpiente."],
+ "Vicisitud": ["Moldeo corporal menor.", "Alteración de carne y hueso.", "Transformaciones útiles.", "Escultura corporal avanzada.", "Cambios extremos."]
+};
+function formatNotes(txt){
+  return String(txt || "").replace(/\\n/g, "\n");
+}
+function disciplineSummaryHTML(){
+ const c = CLANS[S.clan] || {disc:[]};
+ return '<div class="discipline-summary">'+c.disc.map(d=>{
+   const levels = DISC_DESC_SIMPLE[d] || ["Nivel básico.", "Nivel intermedio.", "Nivel notable.", "Nivel avanzado.", "Dominio superior."];
+   return '<h4>'+d+'</h4><ol>'+levels.map((txt,i)=>'<li><b>Nivel '+(i+1)+':</b> '+txt+'</li>').join('')+'</ol>';
+ }).join('')+'</div>';
+}
+
+
+function meritFlawStoryHTML(){
+  const all = [...(S.merits||[]), ...(S.flaws||[])];
+  if(!all.length) return "<p>Sin méritos o defectos registrados.</p>";
+  return "<ul>"+all.map(x=>{
+    const tipo = x[1]==="merit" ? "Mérito" : "Defecto";
+    const desc = (typeof descForTrait === "function") ? descForTrait(x[0]) : "Rasgo narrativo importante del personaje.";
+    return "<li><b>"+tipo+": "+x[0]+" ("+x[2]+" pts)</b><br>"+desc+"</li>";
+  }).join("")+"</ul>";
+}
+
+
+function inventoryCombatBox(){
+  return '<div class="gothic-box"><h3>Combate e Inventario</h3><div style="height:110px;border-top:1px solid #111;padding-top:6px">Armas / Equipo / Armadura:<br><br>________________________________________________________________<br><br>________________________________________________________________<br><br>________________________________________________________________</div></div>';
+}
+
+function collect(sel){let r=[];document.querySelectorAll(sel).forEach(e=>r.push([e.dataset.name,e.value]));return r}
+function renderList(title,items){return '<div class="box"><h3>'+title+'</h3>'+items.map(x=>'<div class="traitline"><span>'+x[0]+'</span><span>'+x[1]+'</span></div>').join("")+'</div>'}
+
+function dots(n,max=10){let s='';for(let i=1;i<=max;i++)s+='<span class="dot '+(i<=Number(n)?'filled':'empty')+'">'+(i<=Number(n)?'●':'○')+'</span>';return '<span class="dots">'+s+'</span>'}
+function squares(n,max=10){let s='';for(let i=1;i<=max;i++)s+='<span>'+(i<=Number(n)?'■':'□')+'</span>';return '<span class="squares">'+s+'</span>'}
+function emptySquares(max=10){let s='';for(let i=1;i<=max;i++)s+='<span>□</span>';return '<span class="squares">'+s+'</span>'}
+function healthBox(){let rows=[["Magullado","", "□"],["Lastimado","-1","□"],["Lesionado","-1","□"],["Herido","-2","□"],["Malherido","-2","□"],["Tullido","-5","□"],["Incapacitado","", "□"]];return '<div class="box"><h3>Salud</h3>'+rows.map(r=>'<div class="health-row"><span>'+r[0]+'</span><span>'+r[1]+'</span><span>'+r[2]+'</span></div>').join("")+'</div>'}
+function derivedBox(){let hum=el("humanity")?.value||0;let will=el("willpower")?.value||0;return '<div class="box"><h3>Humanidad / Senda</h3>'+dots(hum,10)+'<div class="print-mini">Porte: __________ (   )</div><h3>Fuerza de Voluntad</h3>'+dots(will,10)+'<br>'+squares(will,10)+'<h3>Reserva de Sangre</h3>'+emptySquares(10)+'<br>'+emptySquares(10)+'<div class="print-mini">Sangre por turno: ______</div></div>'}
+
+
+function dots(n,max=10){let s='';for(let i=1;i<=max;i++)s+=(i<=Number(n)?'●':'○');return '<span class="gdot">'+s+'</span>'}
+function circles(n,max=5){let s='';for(let i=1;i<=max;i++)s+=(i<=Number(n)?'●':'○');return '<span class="gdot">'+s+'</span>'}
+function squares(n,max=10){let s='';for(let i=1;i<=max;i++)s+=(i<=Number(n)?'■':'□');return '<span class="gsq">'+s+'</span>'}
+function emptySquares(max=10){let s='';for(let i=1;i<=max;i++)s+='□';return '<span class="gsq">'+s+'</span>'}
+function collectValueByName(sel,name){let found='';document.querySelectorAll(sel).forEach(e=>{if(e.dataset.name===name)found=e.value});return found||0}
+function traitSection(title,names,sel){return '<div class="gothic-box"><h3>'+title+'</h3>'+names.map(n=>'<div class="gothic-trait"><span>'+n+' <span class="gothic-line"></span></span>'+circles(collectValueByName(sel,n),5)+'</div>').join('')+'</div>'}
+function customTraitSection(title,items){return '<div class="gothic-box"><h3>'+title+'</h3>'+items.map(x=>'<div class="gothic-trait"><span>'+x[0]+' <span class="gothic-line"></span></span>'+circles(x[1],5)+'</div>').join('')+'</div>'}
+function healthBoxV4(){let rows=[["Magullado",""],["Lastimado","−1"],["Lesionado","−1"],["Herido","−2"],["Malherido","−2"],["Tullido","−5"],["Incapacitado",""]];let weak=(CLANS[S.clan]&&CLANS[S.clan].weak)?CLANS[S.clan].weak:"";let expText=S.freebieMode==="manual"?'<b>Experiencia inicial:</b> '+Number(S.freebieRemaining||0)+'<br><span style="font-size:9px">Sobrante de puntos gratuitos manuales.</span>':'';return '<div class="gothic-box"><h3>Salud</h3>'+rows.map(r=>'<div class="health-grid"><span>'+r[0]+'</span><span>'+r[1]+'</span><span>□</span></div>').join('')+'<div class="section-title" style="font-size:15px;margin-top:7px">Debilidad del Clan</div><div style="min-height:45px;border-top:1px solid #111;font-size:10.5px;line-height:1.18;padding-top:4px">'+esc(weak)+'</div><div class="section-title" style="font-size:15px">Experiencia</div><div style="height:55px;border-top:1px solid #111;font-size:11px;line-height:1.2;padding-top:4px">'+expText+'</div></div>'}
+function bloodBoxV4(){return '<div class="gothic-box"><h3>Reserva de Sangre</h3><div>'+emptySquares(10)+'</div><div>'+emptySquares(10)+'</div><div style="font-size:11px;margin-top:4px">Sangre por turno: <span class="gothic-line"></span></div></div>'}
+function humanityWillBoxV4(){let hum=el("humanity")?.value||0;let will=el("willpower")?.value||0;return '<div class="gothic-box"><h3>Humanidad/Senda</h3>'+dots(hum,10)+'<div style="font-size:11px;margin-top:4px">Porte: <span class="gothic-line"></span> ( &nbsp; )</div><h3 style="margin-top:12px">Fuerza de Voluntad</h3>'+dots(will,10)+'<br>'+squares(will,10)+'</div>'}
+function meritsBoxV4(){return inventoryCombatBox();}
+function freebieAllocationsHTML(){
+  const total=freebieTotal().total;
+  if(S.freebieMode!=="manual"){
+    return '<div><b>Modo:</b> Narrador</div><div><b>Disponibles:</b> '+total+' puntos</div><div style="font-size:9.2px;line-height:1.15">No fueron asignados manualmente. Quedan como referencia para conversar con el Narrador.</div><span style="font-size:8.8px">'+freebieText()+'</span>';
+  }
+  const rows=(S.freebieAllocations||[]).map(a=>{
+    return '<tr><td>+'+Number(a.add)+' '+esc(freebieTypeLabel(a.type))+'</td><td>'+esc(a.name)+'</td><td>'+Number(a.total)+'</td></tr>';
+  }).join('') || '<tr><td colspan="3">Sin puntos gastados manualmente.</td></tr>';
+  return '<table class="freebie-print-table"><tr><th>Compra</th><th>Rasgo</th><th>Pts</th></tr>'+rows+'</table>'+
+    '<div style="margin-top:4px"><b>Usados:</b> '+Number(S.freebieSpent||0)+' / '+total+'<br><b>Experiencia inicial:</b> '+Number(S.freebieRemaining||0)+'</div>'+
+    '<span style="font-size:8.8px">'+freebieText()+'</span>';
+}
+function meritFlawWeaknessBoxV4(){
+  const all=[...(S.merits||[]),...(S.flaws||[])];
+  const c=CLANS[S.clan]||{};
+  const merits=all.filter(x=>x[1]==="merit");
+  const flaws=all.filter(x=>x[1]==="flaw");
+  function traitItems(list,tipo){
+    if(!list.length) return '<div style="font-size:10px;margin-bottom:5px">Sin '+tipo.toLowerCase()+' registrados.</div>';
+    return list.map(x=>'<div style="margin-bottom:5px"><b>'+tipo+': '+esc(x[0])+' ('+esc(x[2])+' pts)</b><br><span>'+esc(descForTrait(x[0]))+'</span></div>').join('');
+  }
+  return '<div class="gothic-box"><h3>Méritos, Defectos y Debilidad</h3>'+
+    '<div style="font-size:10px;line-height:1.15">'+
+    '<b>Debilidad del clan '+esc(S.clan)+':</b><br>'+esc(c.weak||'')+
+    '<hr style="border:0;border-top:1px solid #111;margin:5px 0">'+
+    traitItems(merits,"Mérito")+
+    '<hr style="border:0;border-top:1px solid #111;margin:5px 0">'+
+    traitItems(flaws,"Defecto")+
+    '</div></div>';
+}
+function showFinal(withStory){
+  document.body.classList.toggle('with-story', !!withStory);
+  updateAll();
+  let c=CLANS[S.clan];
+  let name=el("name")?.value||S.name;
+  let attrHTML=Object.keys(ATTRS).map(g=>traitSection(g,ATTRS[g],".attr")).join("");
+  let abilHTML=Object.keys(ABIL).map(g=>traitSection(g,ABIL[g],".abil")).join("");
+  let discItems=[];document.querySelectorAll(".disc").forEach(e=>discItems.push([e.dataset.name,e.value]));
+  let bgItems=[];document.querySelectorAll(".bg").forEach(e=>bgItems.push([e.dataset.name,e.value]));
+  let virtItems=[];document.querySelectorAll(".virt").forEach(e=>virtItems.push([e.dataset.name,e.value]));
+  el("finalOutput").innerHTML =
+  '<div class="gothic-sheet '+(withStory?'final-page':'')+'">'+
+    '<div class="gothic-title"><div class="small-title">EDICIÓN 20° ANIVERSARIO</div><div class="main-title">VAMPIRO</div><div class="sub-title">LA MASCARADA</div></div>'+
+    '<div class="gothic-info">'+
+      '<div><b>Nombre:</b> '+esc(name)+'</div><div><b>Naturaleza:</b> '+esc(el("nature")?.value)+'</div><div><b>Clan:</b> '+S.clan+'</div>'+
+      '<div><b>Jugador:</b> '+esc(el("player")?.value)+'</div><div><b>Conducta:</b> '+esc(el("demeanor")?.value)+'</div><div><b>Generación:</b> '+esc(el("generation")?.value)+'</div>'+
+      '<div><b>Crónica:</b> '+esc(el("chronicle")?.value)+'</div><div><b>Concepto:</b> '+esc(el("concept")?.value)+'</div><div><b>Sire:</b> <span class="gothic-line"></span></div>'+
+    '</div>'+
+    '<div class="section-title">Atributos</div><div class="gothic-grid-3">'+attrHTML+'</div>'+
+    '<div class="section-title">Habilidades</div><div class="gothic-grid-3">'+abilHTML+'</div>'+
+    '<div class="section-title">Ventajas</div><div class="gothic-grid-3">'+customTraitSection("Disciplinas",discItems)+customTraitSection("Trasfondos (Máx. 3)",bgItems)+customTraitSection("Virtudes",virtItems)+'</div>'+
+    '<div class="bottom-grid">'+healthBoxV4()+humanityWillBoxV4()+bloodBoxV4()+'</div>'+
+    '<div class="gothic-grid-2" style="margin-top:8px">'+meritsBoxV4()+meritFlawWeaknessBoxV4()+'</div>'+
+    '<div class="rule-footer">Inicial: Atributos 7/5/3 • Habilidades 13/9/5 • Disciplinas 3 • Trasfondos 5 • Virtudes 7 • Resto manual a Experiencia</div>'+
+  '</div>'+
+  (withStory ? '<div class="story-sheet history-page"><div class="gothic-title"><div class="sub-title">HISTORIA DEL PERSONAJE</div></div><div class="story-columns"><div class="story-block"><h3>Historia</h3><p style="white-space:pre-wrap">'+esc(S.story||el("notes")?.value||"Historia no desarrollada.")+'</p></div><div class="narrator-card"><h3>Notas del jugador</h3><p style="white-space:pre-wrap">'+esc(formatNotes(S.narrator||"Sin notas adicionales."))+'</p><h3>Resumen de Disciplinas</h3>'+disciplineSummaryHTML()+'</div></div><p style="text-align:center;margin-top:20px;font-style:italic">“Toda máscara esconde un monstruo, pero no todos los monstruos se saben monstruos.”</p></div>' : '')+
+  finalActionPanelHTML();
+  show("finalOutput");
+}
+
+
+function safeFileName(s){
+  return String(s||"personaje").trim().replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ_-]+/g,"_").replace(/_+/g,"_").slice(0,60) || "personaje";
+}
+function currentCharacterName(){
+  return (el("name")?.value || el("startName")?.value || S.name || "Personaje").trim();
+}
+function printOrSavePDF(){
+  const name=safeFileName(currentCharacterName());
+  document.title="Vampiro_V20_"+name;
+  window.print();
+}
+function finalActionPanelHTML(){
+  const defaultMail=EMAIL_NARRADOR_DEFAULT || "victor4740@gmail.com";
+  return '<div class="no-print final-actions">'+
+    '<h3>Imprimir, guardar PDF y enviar por correo</h3>'+
+    '<div class="tool-panel email-print-panel">'+
+      '<h4>1) Guardar PDF</h4>'+
+      '<p class="muted-help">Primero guarda la hoja como PDF. En la ventana de impresión elige <b>Guardar como PDF</b>.</p>'+
+      '<button type="button" onclick="printOrSavePDF()">Imprimir / Guardar PDF</button>'+
+      '<hr class="tool-separator">'+
+      '<h4>2) Enviar por correo</h4>'+
+      '<p class="muted-help">Después de guardar el PDF, abre el correo desde aquí. El sistema preparará destinatario, asunto y mensaje, pero <b>el PDF debe adjuntarse manualmente</b> desde tu correo.</p>'+
+      '<label>Correo del Narrador</label>'+
+      '<input id="gmEmail" value="'+defaultMail+'" readonly>'+
+      '<label>Correo del jugador (opcional)</label>'+
+      '<input id="playerEmail" type="email" placeholder="jugador@correo.com">'+
+      '<small>Se abrirá Gmail con el correo listo. Antes de enviarlo, adjunta manualmente el PDF que guardaste en el paso 1. Si Gmail no se abre, tu navegador usará la aplicación de correo configurada.</small>'+
+      '<div class="tool-actions"><button id="prepareEmailBtn" type="button" onclick="prepareCharacterEmail()">Abrir correo para adjuntar PDF</button></div>'+
+      '<div id="emailStatus" class="auto-note"></div>'+
+    '</div>'+
+  '</div>';
+}
+function characterEmailSummary(){
+  const c=CLANS[S.clan]||{disc:[],weak:""};
+  const name=currentCharacterName();
+  const total=freebieTotal().total;
+  const spent=Number(S.freebieSpent||0);
+  const exp=S.freebieMode==="manual"?Number(S.freebieRemaining||0):total;
+  let lines=[];
+  lines.push("Hola,");
+  lines.push("");
+  lines.push("Adjunto la hoja de personaje en PDF.");
+  lines.push("");
+  lines.push("Resumen del personaje:");
+  lines.push("- Nombre: "+name);
+  lines.push("- Clan: "+(displayClanName()||"Sin clan"));
+  lines.push("- Organización: "+sectLabel());
+  lines.push("- Disciplinas: "+(c.disc||[]).join(", "));
+  lines.push("- Debilidad del clan: "+(c.weak||""));
+  lines.push("- Trasfondos: "+(S.backgrounds||[]).join(", "));
+  lines.push("- Puntos gratuitos: "+freebieText());
+  lines.push("- Modo de asignación: "+(S.freebieMode==="manual"?"Manual":"Narrador"));
+  if(S.freebieMode==="manual"){
+    lines.push("- Puntos usados: "+spent);
+    lines.push("- Experiencia inicial: "+exp);
+  }
+  if(S.freebieAllocations && S.freebieAllocations.length){
+    lines.push("");
+    lines.push("Compras con puntos gratuitos:");
+    S.freebieAllocations.forEach(a=>lines.push("- +"+a.add+" "+freebieTypeLabel(a.type)+" — "+a.name+" ("+a.total+" pts)"));
+  }
+  lines.push("");
+  lines.push("Nota: este correo fue generado desde el creador fan-made de Vampiro V20.");
+  return lines.join("\\n");
+}
+function validarEmailSimple(mail){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(mail||"").trim());
+}
+function emailStatusMessage(html){
+  const status=el("emailStatus");
+  if(status) status.innerHTML=html;
+}
+function finalPrintableCloneForEmail(){
+  const source=el("finalOutput");
+  if(!source || source.classList.contains("hidden")) throw new Error("Primero debes generar la hoja final antes de enviar el correo.");
+  syncFormAttributes(document);
+  const clone=source.cloneNode(true);
+  clone.classList.remove("hidden");
+  clone.querySelectorAll(".no-print,.final-actions,script").forEach(n=>n.remove());
+  clone.style.display="block";
+  clone.style.background="#ffffff";
+  clone.style.color="#111";
+  clone.style.width="202mm";
+  clone.style.margin="0";
+  clone.style.padding="0";
+
+  const temp=document.createElement("div");
+  temp.id="emailPdfTemp";
+  temp.style.position="fixed";
+  temp.style.left="-10000px";
+  temp.style.top="0";
+  temp.style.width="210mm";
+  temp.style.background="#ffffff";
+  temp.style.zIndex="-1";
+  temp.appendChild(clone);
+  document.body.appendChild(temp);
+  return {temp, clone};
+}
+async function generateCharacterPDFBase64ForEmail(){
+  if(!window.html2pdf) throw new Error("No se cargó html2pdf. Revisa tu conexión a internet o el enlace CDN.");
+  const name=safeFileName(currentCharacterName());
+  const {temp, clone}=finalPrintableCloneForEmail();
+  const hasStory=!!clone.querySelector(".story-sheet");
+  try{
+    const opt={
+      margin:[4,4,4,4],
+      filename:"Ficha_Vampiro_V20_"+name+".pdf",
+      image:{type:"jpeg", quality:0.98},
+      html2canvas:{scale:2, useCORS:true, backgroundColor:"#ffffff", scrollY:0},
+      jsPDF:{unit:"mm", format:"a4", orientation:"portrait"},
+      pagebreak:{mode:["css","legacy"], before: hasStory ? [".history-page"] : []}
+    };
+    const dataUri=await html2pdf().set(opt).from(clone).outputPdf("datauristring");
+    const pdfBase64=String(dataUri).split(",")[1];
+    if(!pdfBase64 || pdfBase64.length<1000) throw new Error("El PDF generado está vacío o incompleto.");
+    return {base64:pdfBase64, filename:opt.filename};
+  } finally {
+    temp.remove();
+  }
+}
+async function sendCharacterEmailWithPDF(){
+  const btn=el("sendEmailJSBtn");
+  const narrator=(el("gmEmail")?.value||EMAIL_NARRADOR_DEFAULT||"victor4740@gmail.com").trim();
+  const player=(el("playerEmail")?.value||"").trim();
+
+  if(!validarEmailSimple(narrator)){
+    alert("El correo del Narrador no tiene un formato válido.");
+    return;
+  }
+  if(player && !validarEmailSimple(player)){
+    alert("El correo del jugador no tiene un formato válido.");
+    return;
+  }
+  if(!initEmailJSOnce()){
+    emailStatusMessage('<span class="status-warn">EmailJS todavía no está configurado.</span><br>Reemplaza EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID y EMAILJS_TEMPLATE_ID en el archivo. En el template crea el adjunto variable <b>pdf_base64</b>.');
+    alert("Falta configurar EmailJS: PUBLIC_KEY, SERVICE_ID y TEMPLATE_ID.");
+    return;
+  }
+
+  try{
+    if(btn) btn.disabled=true;
+    emailStatusMessage('<span class="status-warn">Generando PDF...</span>');
+    const pdf=await generateCharacterPDFBase64ForEmail();
+    const name=currentCharacterName();
+    const c=CLANS[S.clan]||{disc:[],weak:""};
+    const recipients=player ? narrator+","+player : narrator;
+    const subject="Hoja de personaje Vampiro V20 - "+name;
+
+    const templateParams={
+      to_email: recipients,
+      narrator_email: narrator,
+      cc_email: player || "",
+      player_email: player || "No indicado",
+      subject: subject,
+      character_name: name,
+      clan: displayClanName() || "Sin clan",
+      secta: sectLabel(),
+      disciplines: (c.disc||[]).join(", "),
+      weakness: c.weak || "",
+      backgrounds: (S.backgrounds||[]).join(", "),
+      freebie_text: freebieText(),
+      message: characterEmailSummary(),
+      pdf_filename: pdf.filename,
+      pdf_base64: pdf.base64,
+      pdf_attachment: pdf.base64
+    };
+
+    emailStatusMessage('<span class="status-warn">Enviando correo por EmailJS...</span>');
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+    emailStatusMessage('<span class="status-ok">Correo enviado correctamente.</span> La ficha PDF fue enviada a '+esc(narrator)+(player?' y al jugador '+esc(player):'')+'.');
+  } catch(err){
+    console.error("Error al enviar por EmailJS:", err);
+    emailStatusMessage('<span class="status-warn">No se pudo enviar el correo.</span><br>'+esc(err && err.message ? err.message : String(err))+'<br><span class="muted-help">Revisa que el template tenga el adjunto variable <b>pdf_base64</b>, y que Service ID, Template ID y Public Key sean correctos.</span>');
+  } finally {
+    if(btn) btn.disabled=false;
+  }
+}
+
+function prepareCharacterEmail(){
+  const gm=(el("gmEmail")?.value||"victor4740@gmail.com").trim() || "victor4740@gmail.com";
+  const player=(el("playerEmail")?.value||"").trim();
+
+  if(!validarEmailSimple(gm)){
+    alert("El correo del Narrador no tiene un formato válido.");
+    return;
+  }
+  if(player && !validarEmailSimple(player)){
+    alert("El correo del jugador no tiene un formato válido.");
+    return;
+  }
+
+  const subject="Hoja de personaje Vampiro V20 - "+currentCharacterName();
+  const body=characterEmailSummary()+"\n\nIMPORTANTE: adjunto manualmente el PDF de la hoja de personaje antes de enviar este correo.";
+
+  const gmailUrl =
+    "https://mail.google.com/mail/?view=cm&fs=1"+
+    "&to="+encodeURIComponent(gm)+
+    (player ? "&cc="+encodeURIComponent(player) : "")+
+    "&su="+encodeURIComponent(subject)+
+    "&body="+encodeURIComponent(body);
+
+  const mailtoUrl =
+    "mailto:"+encodeURIComponent(gm)+
+    "?subject="+encodeURIComponent(subject)+
+    (player ? "&cc="+encodeURIComponent(player) : "")+
+    "&body="+encodeURIComponent(body);
+
+  const status=el("emailStatus");
+  if(status){
+    status.innerHTML='<span class="status-ok">Correo preparado.</span> Se abrirá Gmail en una pestaña nueva. Adjunta manualmente el PDF antes de enviarlo. El destinatario principal es '+gm+'.';
+  }
+
+  // GitHub Pages no puede enviar correos automáticamente ni adjuntar el PDF sin un servicio externo.
+  // Por eso abrimos Gmail Web con destinatario, asunto y resumen listos.
+  const win = window.open(gmailUrl, "_blank", "noopener,noreferrer");
+
+  // Si el navegador bloquea la ventana emergente, usamos mailto como respaldo.
+  if(!win){
+    window.location.href = mailtoUrl;
+  }
+}
+function syncFormAttributes(root=document){
+  root.querySelectorAll('input, textarea, select').forEach(e=>{
+    if(e.type==='checkbox' || e.type==='radio'){
+      if(e.checked) e.setAttribute('checked','checked'); else e.removeAttribute('checked');
+    } else if(e.tagName==='TEXTAREA'){
+      e.textContent=e.value;
+    } else if(e.tagName==='SELECT'){
+      [...e.options].forEach(o=>{ if(o.selected) o.setAttribute('selected','selected'); else o.removeAttribute('selected'); });
+    } else {
+      e.setAttribute('value', e.value);
+    }
+  });
+}
+function progressPayload(){
+  syncFormAttributes(document);
+  return {
+    version:"v30_secta_clanes_antitribu_caitiff",
+    savedAt:new Date().toISOString(),
+    S:S,
+    bodyClass:document.body.className,
+    mainHTML:document.querySelector('main')?.innerHTML || "",
+    title:document.title
+  };
+}
+function restoreProgressPayload(data){
+  if(!data || !data.mainHTML) throw new Error("El archivo de progreso no contiene datos válidos.");
+  S=Object.assign({name:"",playerName:"",sect:"",sectLabel:"",clan:"",clanDisplay:"",caitiffPackage:"Equilibrado",backgrounds:[],merits:[],flaws:[],story:"",narrator:"",freebieMode:"narrator",freebieSpent:0,freebieRemaining:0,freebieHumanity:0,freebieWillpower:0,freebieAllocations:[],freebieWarning:""}, data.S||{});
+  if(S.clan==="Caitiff") applyCaitiffPackage();
+  applySectClanDisplay();
+  document.querySelector('main').innerHTML=data.mainHTML;
+  document.body.className=data.bodyClass||"";
+  document.title=data.title||"Vampiro V20";
+  rebindCoreButtons();
+  showProgressTools();
+  const status=el("progressStatus");
+  if(status) status.innerHTML='<span class="status-ok">Progreso cargado correctamente.</span>';
+  updateAll?.();
+}
+function saveProgressLocal(){
+  try{
+    localStorage.setItem('vampiroV20Progress', JSON.stringify(progressPayload()));
+    const status=el("progressStatus");
+    if(status) status.innerHTML='<span class="status-ok">Progreso guardado en este navegador.</span>';
+    alert("Progreso guardado en este navegador.");
+  }catch(err){
+    alert("No se pudo guardar el progreso: "+err.message);
+  }
+}
+function loadProgressLocal(){
+  try{
+    const raw=localStorage.getItem('vampiroV20Progress');
+    if(!raw){ alert("No hay progreso guardado en este navegador."); return; }
+    restoreProgressPayload(JSON.parse(raw));
+  }catch(err){
+    alert("No se pudo cargar el progreso: "+err.message);
+  }
+}
+function clearProgressLocal(){
+  localStorage.removeItem('vampiroV20Progress');
+  const status=el("progressStatus");
+  if(status) status.innerHTML='<span class="status-warn">Guardado local borrado.</span>';
+  alert("Guardado local borrado.");
+}
+function rebindCoreButtons(){
+  const bind=(id,fn)=>{ const b=el(id); if(b && typeof fn==='function') b.onclick=function(e){e.preventDefault(); fn();}; };
+  bind("startBtn", startSect);
+  bind("calcSectBtn", calcSect);
+  bind("calcClanBtn", calcClan);
+  bind("calcBgBtn", calcBg);
+  bind("calcMeritBtn", calcMerits);
+  bind("yesStoryBtn", startStory);
+  const no=el("noStoryBtn"); if(no) no.onclick=function(e){e.preventDefault(); showFinal(false);};
+  bind("genStoryBtn", generateStory);
+  const fb=el("continueAfterFreebieBtn"); if(fb) fb.onclick=function(e){e.preventDefault(); show("storyAsk");};
+}
+
+
+function randomizeRadiosByPrefix(prefix, count){
+  for(let i=0;i<count;i++){
+    const radios=[...document.querySelectorAll('input[name="'+prefix+i+'"]')];
+    if(radios.length){
+      const picked=radios[Math.floor(Math.random()*radios.length)];
+      picked.checked=true;
+    }
+  }
+}
+function randomizeClanAnswers(){ randomizeRadiosByPrefix("cq", Q.length); }
+function randomizeBackgroundAnswers(){ randomizeRadiosByPrefix("bq", BGQ.length); }
+function randomizeMeritAnswers(){ randomizeRadiosByPrefix("mq", MQ.length); }
+function randomizeStoryAnswers(){ randomizeRadiosByPrefix("hq", STORY.length); }
+
+document.addEventListener("DOMContentLoaded",()=>{el("startBtn").addEventListener("click",startSect);el("calcClanBtn").addEventListener("click",calcClan);el("calcBgBtn").addEventListener("click",calcBg);el("calcMeritBtn").addEventListener("click",calcMerits);el("yesStoryBtn").addEventListener("click",startStory);el("noStoryBtn").addEventListener("click",()=>showFinal(false));el("genStoryBtn").addEventListener("click",generateStory);});
+</script>
+<script>
+(function(){
+  function safeBindStart(){
+    var btn = document.getElementById("startBtn");
+    if(btn && typeof startSect === "function"){
+      btn.onclick = function(e){
+        e.preventDefault();
+        try { startSect(); }
+        catch(err){
+          alert("Error al iniciar el test: " + err.message);
+          console.error(err);
+        }
+      };
+    }
+  }
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", safeBindStart);
+  } else {
+    safeBindStart();
+  }
+})();
+</script>
+
+<script>
+(function(){
+  function bindFreebie(){
+    var btn = document.getElementById("continueAfterFreebieBtn");
+    if(btn){
+      btn.onclick = function(e){
+        e.preventDefault();
+        show("storyAsk");
+      };
+    }
+  }
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", bindFreebie);
+  } else {
+    bindFreebie();
+  }
+})();
+</script>
+
+<script>
+;window.addEventListener('load', function(){
+  var b=document.getElementById('startBtn');
+  if(b && typeof startSect==='function'){
+    b.onclick=function(e){ e.preventDefault(); startSect(); };
+  }
+});
+</script>
+
+<script>
+(function(){
+  function autoBindV27(){
+    if(typeof rebindCoreButtons === "function") rebindCoreButtons();
+  }
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", autoBindV27);
+  else autoBindV27();
+})();
+</script>
+
+<script>
+/* ===== v32: Méritos/Defectos por organización + 35 puntos gratuitos ===== */
+const FREEBIE_BASE_V32 = 35;
+const MERIT_QUESTIONS_BY_SECT = {
+  "Camarilla": [
+    ["¿Qué ventaja te permite sobrevivir mejor en la política de la Torre de Marfil?", [["Reputación Respetable","merit",2],["Favor de un Antiguo","merit",3],["Carisma Natural","merit",2],["Deuda Política","flaw",2],["Rival de Clan","flaw",2]]],
+    ["¿Qué red o secreto define tu lugar en la ciudad?", [["Contactos Útiles","merit",2],["Mentor Protector","merit",3],["Memoria Eidética","merit",2],["Secreto Oscuro","flaw",1],["Obligación con el Príncipe","flaw",3]]],
+    ["¿Qué problema puede destruir tu imagen pública?", [["Sangre Fría","merit",2],["Etiqueta Impecable","merit",1],["Aliado Influyente","merit",3],["Mala Reputación","flaw",2],["Enemigo Político","flaw",3]]],
+    ["¿Qué vínculo mortal sigue siendo peligroso para ti?", [["Recursos Ocultos","merit",2],["Suerte","merit",3],["Sentidos Agudos","merit",1],["Dependiente Mortal","flaw",3],["Amor Perdido","flaw",2]]]
+  ],
+  "Sabbat": [
+    ["¿Qué ventaja te hace útil para una manada del Sabbat?", [["Lealtad de Manada","merit",2],["Reputación Temible","merit",2],["Sangre Fría","merit",2],["Fanático de la Secta","flaw",2],["Impulsivo","flaw",2]]],
+    ["¿Qué rasgo aparece cuando aceptas tu monstruosidad?", [["Furia Controlada","merit",2],["Resistencia al Dolor","merit",3],["Ambidiestro","merit",1],["Crueldad Notoria","flaw",2],["Aura Inquietante","flaw",2]]],
+    ["¿Qué complicación arrastra tu pasado dentro de la violencia?", [["Sentidos Agudos","merit",1],["Suerte Extraña","merit",3],["Aliado Violento","merit",2],["Enemigo","flaw",2],["Marcado por Espíritus","flaw",3]]],
+    ["¿Qué debilidad amenaza tu relación con la manada?", [["Superviviente Brutal","merit",2],["Instinto de Caza","merit",2],["Contactos Criminales","merit",2],["Mala Reputación","flaw",2],["Rival Persistente","flaw",2]]]
+  ],
+  "Independientes": [
+    ["¿Qué ventaja sostiene tu independencia frente a las Sectas?", [["Red Comercial","merit",2],["Recursos Ocultos","merit",2],["Contactos Útiles","merit",2],["Deuda","flaw",2],["Pacto Peligroso","flaw",3]]],
+    ["¿Qué herramienta usas para negociar o sobrevivir?", [["Sangre Fría","merit",2],["Memoria Eidética","merit",2],["Aliado Influyente","merit",3],["Rival Persistente","flaw",2],["Secreto Oscuro","flaw",1]]],
+    ["¿Qué elemento familiar, comercial o criminal te persigue?", [["Suerte","merit",3],["Identidad Falsa","merit",2],["Sentidos Agudos","merit",1],["Obligación Familiar","flaw",2],["Enemigo","flaw",2]]],
+    ["¿Qué costo tiene actuar por cuenta propia?", [["Contactos Útiles","merit",2],["Recursos Ocultos","merit",2],["Carisma Natural","merit",2],["Dependiente Mortal","flaw",3],["Mala Reputación","flaw",2]]]
+  ],
+  "Caitiff": [
+    ["¿Qué ventaja te permite sobrevivir sin clan reconocido?", [["Superviviente Callejero","merit",2],["Identidad Falsa","merit",2],["Suerte","merit",3],["Rechazado por la Estirpe","flaw",3],["Sin Protección","flaw",3]]],
+    ["¿Qué recurso precario te mantiene una noche más con vida?", [["Contactos Útiles","merit",2],["Sentidos Agudos","merit",1],["Sangre Fría","merit",2],["Refugio Inseguro","flaw",2],["Enemigo","flaw",2]]],
+    ["¿Qué marca social revela que no perteneces a nadie?", [["Ambidiestro","merit",1],["Suerte Extraña","merit",3],["Aliado Mortal","merit",2],["Mala Reputación","flaw",2],["Aura Inquietante","flaw",2]]],
+    ["¿Qué secreto te ayuda o te condena?", [["Ruta de Escape","merit",2],["Mentor Improbable","merit",2],["Superviviente Callejero","merit",2],["Secreto Oscuro","flaw",1],["Dependiente Mortal","flaw",3]]]
+  ]
+};
+MERIT_QUESTIONS_BY_SECT["Autarca"] = MERIT_QUESTIONS_BY_SECT["Caitiff"];
+function activeMeritQuestions(){
+  return MERIT_QUESTIONS_BY_SECT[S.sect] || MERIT_QUESTIONS_BY_SECT[sectLabel()] || MQ;
+}
+(function extendTraitDescriptionsV32(){
+  const add = {
+    "Reputación Respetable":"Tu nombre tiene peso positivo en ciertos círculos vampíricos. Abre puertas, pero también atrae expectativas.",
+    "Favor de un Antiguo":"Un vampiro antiguo te debe un favor o te mira con cierto interés. Eso puede protegerte o convertirte en pieza de un juego mayor.",
+    "Deuda Política":"Debes favores dentro de la estructura de poder. Alguien puede cobrarlos en el peor momento.",
+    "Rival de Clan":"Un miembro de tu propio clan compite contigo, te desprecia o busca dejarte en ridículo.",
+    "Obligación con el Príncipe":"Tienes una responsabilidad formal o informal con el poder local de la Camarilla.",
+    "Etiqueta Impecable":"Sabes comportarte en reuniones, Elíseos y negociaciones peligrosas.",
+    "Aliado Influyente":"Alguien con poder mortal o vampírico puede ayudarte, siempre que no comprometa demasiado su posición.",
+    "Enemigo Político":"Un rival con influencia quiere perjudicarte dentro de la ciudad.",
+    "Recursos Ocultos":"Posees dinero, bienes o accesos que no están a tu nombre o que pocos conocen.",
+    "Lealtad de Manada":"La manada confía en ti más que en otros recién llegados. Eso es una protección, pero también una cadena.",
+    "Reputación Temible":"Otros te consideran peligroso. Puede evitar desafíos, pero también provocar que te ataquen primero.",
+    "Fanático de la Secta":"Tu fe en la causa te hace predecible y peligroso, incluso para tus aliados.",
+    "Impulsivo":"Actúas antes de pensar, especialmente cuando te provocan.",
+    "Furia Controlada":"Tu violencia tiene dirección. Puedes canalizarla sin perder completamente el control.",
+    "Resistencia al Dolor":"Soportas daño, miedo o presión física mejor que la mayoría.",
+    "Crueldad Notoria":"Tu falta de compasión es conocida. Algunos te temen; otros desconfían profundamente.",
+    "Aliado Violento":"Tienes acceso a alguien útil para intimidación, protección o conflicto directo.",
+    "Superviviente Brutal":"Has aprendido a resistir noches difíciles, persecuciones y violencia sin quebrarte.",
+    "Instinto de Caza":"Comprendes muy bien cómo acechar, emboscar o seguir a una presa.",
+    "Contactos Criminales":"Conoces pandillas, traficantes, ladrones, informantes o gente útil de la calle.",
+    "Red Comercial":"Tienes contactos de negocios, rutas de intercambio o favores económicos.",
+    "Pacto Peligroso":"Hiciste un trato que te da ventajas, pero el precio todavía no se ha pagado.",
+    "Identidad Falsa":"Posees una fachada, documentos o nombre alternativo que te permite desaparecer parcialmente.",
+    "Obligación Familiar":"Tu familia, linaje mortal o red comercial te exige lealtad, dinero o silencio.",
+    "Superviviente Callejero":"Sabes moverte sin protección formal, conseguir refugio y evitar problemas mayores.",
+    "Rechazado por la Estirpe":"Tu falta de linaje reconocido genera desprecio, miedo o persecución.",
+    "Sin Protección":"No tienes clan, Sire o secta que responda por ti si alguien decide destruirte.",
+    "Refugio Inseguro":"Tu lugar de descanso tiene fallas: ubicación mala, poca protección o gente que podría descubrirlo.",
+    "Aliado Mortal":"Una persona viva aún te ayuda o cree en ti, aunque eso puede ponerla en peligro.",
+    "Ruta de Escape":"Tienes planes, contactos o lugares preparados para desaparecer cuando todo salga mal.",
+    "Mentor Improbable":"Alguien te enseñó lo básico sin aceptarte del todo como protegido formal."
+  };
+  Object.assign(TRAIT_DESC, add);
+})();
+function freebieTotal(){
+  const meritCost = (S.merits || []).reduce((a,x)=>a + Number(x[2]||0),0);
+  const flawGain = (S.flaws || []).reduce((a,x)=>a + Number(x[2]||0),0);
+  return {base:FREEBIE_BASE_V32, meritCost, flawGain, total:FREEBIE_BASE_V32 - meritCost + flawGain};
+}
+function freebieText(){
+  const f = freebieTotal();
+  return FREEBIE_BASE_V32 + " base - " + f.meritCost + " por Méritos + " + f.flawGain + " por Defectos = " + f.total + " puntos gratuitos";
+}
+function startMerits(){
+  let questions = activeMeritQuestions();
+  let box=el("meritQuestions");
+  box.innerHTML="";
+  questions.forEach((q,i)=>{
+    let d=document.createElement("div");
+    d.className="question";
+    d.innerHTML="<p><b>"+(i+1)+". "+q[0]+"</b></p>";
+    q[1].forEach((op,j)=>{
+      d.innerHTML+='<label class="option"><input type="radio" name="mq'+i+'" value="'+encodeURIComponent(JSON.stringify(op))+'"> '+op[0]+' ('+(op[1]=="merit"?"Mérito":"Defecto")+', '+op[2]+' pts)<small>'+descForTrait(op[0])+'</small></label>';
+    });
+    box.appendChild(d);
+  });
+  show("meritStep");
+}
+function calcMerits(){
+  const questions = activeMeritQuestions();
+  let chosen=[];
+  for(let i=0;i<questions.length;i++){
+    let r=document.querySelector('input[name="mq'+i+'"]:checked');
+    if(!r){alert("Falta responder mérito/defecto "+(i+1)); return;}
+    chosen.push(JSON.parse(decodeURIComponent(r.value)));
+  }
+  let flaws=chosen.filter(x=>x[1]==="flaw");
+  let merits=chosen.filter(x=>x[1]==="merit");
+  if(chosen.length!==4){alert("Debes escoger exactamente 4 rasgos entre Méritos y Defectos."); return;}
+  if(flaws.length<1){alert("Debes escoger como mínimo 1 Defecto para continuar."); return;}
+  S.flaws=flaws;
+  S.merits=merits;
+  let all=[...S.merits,...S.flaws];
+  el("meritResult").innerHTML=
+   '<h2>Rasgos sugeridos</h2>'+ 
+   '<div class="result">'+
+   '<p>El personaje tendrá <b>4 rasgos</b> en total, con mínimo <b>1 Defecto</b>. Los Méritos descuentan puntos gratuitos y los Defectos aumentan el total disponible. Base actual: <b>'+FREEBIE_BASE_V32+' puntos gratuitos</b>.</p>'+ 
+   all.map(x=>infoCard((x[1]==="merit"?"Mérito: ":"Defecto: ")+x[0]+" ("+x[2]+" pts)", descForTrait(x[0]), x[1]==="merit"?"Ventaja útil para ciertas escenas.":"Problema narrativo que puede complicar la historia.")).join("")+
+   '<p><b>Cálculo:</b> '+freebieText()+'</p>'+ 
+   '</div><button type="button" onclick="renderSheet()">Crear hoja</button>';
+  show("meritResult");
+}
+function updateFreebieHeader(){
+  const f=freebieTotal();
+  const label=el("freebieAvailableLabel");
+  if(label) label.innerHTML="Puntos disponibles: "+f.total+" — "+freebieText();
+  const meritBox=el("freebieMeritCostBox"); if(meritBox) meritBox.textContent=f.meritCost;
+  const flawBox=el("freebieFlawGainBox"); if(flawBox) flawBox.textContent=f.flawGain;
+  const totalBox=el("freebieTotalBox"); if(totalBox) totalBox.textContent=f.total;
+}
+function randomizeMeritAnswers(){ randomizeRadiosByPrefix("mq", activeMeritQuestions().length); }
+if(typeof rebindCoreButtons === "function") rebindCoreButtons();
+</script>
+
+
+<script>
+/* ===== v33: Tests separados por organización ===== */
+const CLAN_QUESTIONS_BY_SECT = {
+  "Camarilla": [
+    ["En una ciudad gobernada por un Príncipe, ¿qué lugar buscarías ocupar?", [["El agente que cambia las reglas desde la calle",["Brujah","Gangrel"]],["El consejero extraño que ve lo que otros ignoran",["Malkavian","Tremere"]],["El rostro elegante que domina salones y Elíseos",["Toreador","Ventrue"]],["El informante oculto que sabe demasiado",["Nosferatu","Malkavian"]],["El estudioso que controla secretos peligrosos",["Tremere","Ventrue"]]]],
+    ["¿Cómo protegerías la Mascarada?", [["Con fuerza y advertencias claras",["Brujah","Ventrue"]],["Evitando a los mortales y moviéndome solo",["Gangrel","Nosferatu"]],["Manipulando recuerdos o información",["Tremere","Malkavian"]],["Cubriendo todo con encanto social",["Toreador","Ventrue"]],["Borrando pruebas desde las sombras",["Nosferatu","Tremere"]]]],
+    ["¿Qué tipo de poder te resulta más natural?", [["Autoridad política",["Ventrue","Tremere"]],["Libertad y resistencia",["Gangrel","Brujah"]],["Rebelión e intensidad",["Brujah","Malkavian"]],["Belleza, deseo e influencia social",["Toreador","Ventrue"]],["Información secreta",["Nosferatu","Tremere"]]]],
+    ["En el Elíseo, ¿qué haces primero?", [["Identifico quién manda realmente",["Ventrue","Tremere"]],["Observo quién miente",["Malkavian","Nosferatu"]],["Busco aliados con encanto",["Toreador","Brujah"]],["Me mantengo lejos de la política",["Gangrel","Nosferatu"]],["Desafío una hipocresía evidente",["Brujah","Gangrel"]]]],
+    ["¿Qué debilidad narrativa te atrae más?", [["Orgullo y responsabilidad",["Ventrue","Toreador"]],["Ira contra el sistema",["Brujah","Gangrel"]],["Aislamiento monstruoso",["Nosferatu","Malkavian"]],["Obsesión por lo oculto",["Tremere","Malkavian"]],["Fascinación por la belleza",["Toreador","Ventrue"]]]],
+    ["¿Cómo obtienes información?", [["Contactos formales",["Ventrue","Toreador"]],["Presión directa",["Brujah","Gangrel"]],["Investigación y rituales",["Tremere","Malkavian"]],["Espionaje y rumores subterráneos",["Nosferatu","Gangrel"]],["Conversaciones elegantes",["Toreador","Malkavian"]]]],
+    ["¿Qué refugio elegirías?", [["Un departamento elegante",["Ventrue","Toreador"]],["Un lugar móvil y simple",["Gangrel","Brujah"]],["Un estudio lleno de libros",["Tremere","Malkavian"]],["Un subterráneo secreto",["Nosferatu","Gangrel"]],["Un espacio artístico o social",["Toreador","Malkavian"]]]],
+    ["¿Qué harías con un mortal útil?", [["Convertirlo en contacto o recurso",["Ventrue","Tremere"]],["Protegerlo si demuestra valor",["Brujah","Gangrel"]],["Usarlo como fuente de inspiración",["Toreador","Malkavian"]],["Mantenerlo sin saber demasiado",["Nosferatu","Ventrue"]],["Estudiar su utilidad a largo plazo",["Tremere","Nosferatu"]]]],
+    ["¿Qué conflicto quieres jugar?", [["Lucha contra el poder establecido",["Brujah","Gangrel"]],["Intriga de salón",["Ventrue","Toreador"]],["Misterio sobrenatural",["Tremere","Malkavian"]],["Secretos del subsuelo",["Nosferatu","Gangrel"]],["Drama social peligroso",["Toreador","Ventrue"]]]],
+    ["¿Qué frase describe mejor a tu personaje?", [["Nadie debería mandar eternamente",["Brujah","Gangrel"]],["Sobrevivir es saber desaparecer",["Nosferatu","Gangrel"]],["Todo poder necesita estructura",["Ventrue","Tremere"]],["La belleza también es dominio",["Toreador","Ventrue"]],["La verdad siempre tiene grietas",["Malkavian","Nosferatu"]]]]
+  ],
+  "Sabbat": [
+    ["Dentro de una manada, ¿qué rol tomarías?", [["Líder frío y ambicioso",["Lasombra","Toreador"]],["Monstruo territorial y protector",["Tzimisce","Gangrel"]],["Guerrero de choque",["Brujah","Gangrel"]],["Profeta perturbador",["Malkavian","Tzimisce"]],["Espía o informante monstruoso",["Nosferatu","Lasombra"]]]],
+    ["¿Cómo entiendes la humanidad perdida?", [["Como una debilidad que debe superarse",["Lasombra","Tzimisce"]],["Como rabia convertida en arma",["Brujah","Gangrel"]],["Como una broma cruel del mundo",["Malkavian","Toreador"]],["Como una máscara útil",["Toreador","Lasombra"]],["Como algo que se pudre en silencio",["Nosferatu","Tzimisce"]]]],
+    ["¿Qué tipo de horror prefieres?", [["Sombras, dominio y poder",["Lasombra","Nosferatu"]],["Carne, territorio y transformación",["Tzimisce","Gangrel"]],["Violencia abierta",["Brujah","Gangrel"]],["Locura sagrada",["Malkavian","Tzimisce"]],["Belleza decadente y cruel",["Toreador","Lasombra"]]]],
+    ["¿Cómo cazas con la manada?", [["Dirijo la operación",["Lasombra","Brujah"]],["Preparo el refugio y el territorio",["Tzimisce","Nosferatu"]],["Ataco primero",["Brujah","Gangrel"]],["Confundo a la presa",["Malkavian","Toreador"]],["Observo desde la oscuridad",["Nosferatu","Lasombra"]]]],
+    ["¿Qué te hace respetable en el Sabbat?", [["Ambición y estrategia",["Lasombra","Toreador"]],["Monstruosidad refinada",["Tzimisce","Malkavian"]],["Valentía brutal",["Brujah","Gangrel"]],["Secretos útiles",["Nosferatu","Malkavian"]],["Capacidad de inspirar deseo o miedo",["Toreador","Lasombra"]]]],
+    ["¿Qué relación tienes con el control?", [["Debo ejercerlo sobre otros",["Lasombra","Toreador"]],["Lo rechazo hasta que lo necesito",["Brujah","Gangrel"]],["Lo aplico sobre mi dominio",["Tzimisce","Nosferatu"]],["Lo rompo con caos",["Malkavian","Brujah"]],["Lo escondo bajo apariencia social",["Toreador","Lasombra"]]]],
+    ["¿Qué harías con un enemigo de la Camarilla?", [["Convertirlo en peón",["Lasombra","Toreador"]],["Destruirlo públicamente",["Brujah","Gangrel"]],["Transformarlo en advertencia",["Tzimisce","Nosferatu"]],["Volverlo loco de miedo",["Malkavian","Nosferatu"]],["Seduce, rompe y abandona",["Toreador","Lasombra"]]]],
+    ["¿Qué símbolo te representa?", [["Una sombra con corona",["Lasombra","Toreador"]],["Una garra en la tierra",["Tzimisce","Gangrel"]],["Un puño ensangrentado",["Brujah","Gangrel"]],["Una máscara rota",["Malkavian","Toreador"]],["Un ojo bajo la ciudad",["Nosferatu","Lasombra"]]]],
+    ["¿Qué defecto aceptarías con más gusto?", [["Orgullo depredador",["Lasombra","Toreador"]],["Territorialidad enfermiza",["Tzimisce","Gangrel"]],["Ira destructiva",["Brujah","Gangrel"]],["Visiones o impulsos caóticos",["Malkavian","Tzimisce"]],["Repulsión y aislamiento",["Nosferatu","Malkavian"]]]],
+    ["¿Qué frase define tu noche eterna?", [["La luz miente; la sombra gobierna",["Lasombra","Nosferatu"]],["El cuerpo es barro para la voluntad",["Tzimisce","Malkavian"]],["La libertad se gana con sangre",["Brujah","Gangrel"]],["El mundo es una broma rota",["Malkavian","Toreador"]],["La belleza también puede devorar",["Toreador","Lasombra"]]]]
+  ],
+  "Independientes": [
+    ["¿Qué sostiene tu independencia?", [["Disciplina y contratos",["Assamita","Giovanni"]],["Familia y negocios",["Giovanni","Seguidores de Set"]],["Engaño y movimiento",["Ravnos","Assamita"]],["Cultos, deseo y corrupción",["Seguidores de Set","Ravnos"]],["Secretos cobrados en sangre",["Assamita","Giovanni"]]]],
+    ["¿Cómo haces tratos?", [["Con precisión y consecuencias",["Assamita","Giovanni"]],["Como una empresa familiar",["Giovanni","Seguidores de Set"]],["Con encanto e ilusión",["Ravnos","Seguidores de Set"]],["Tentando las debilidades del otro",["Seguidores de Set","Giovanni"]],["Sin revelar jamás todo",["Assamita","Ravnos"]]]],
+    ["¿Qué secreto te interesa más?", [["Quién merece castigo",["Assamita","Ravnos"]],["Qué ocultan los muertos",["Giovanni","Assamita"]],["Qué desea realmente una persona",["Seguidores de Set","Ravnos"]],["Cómo escapar de toda jaula",["Ravnos","Assamita"]],["Dónde está el dinero verdadero",["Giovanni","Seguidores de Set"]]]],
+    ["¿Qué reputación prefieres?", [["Letal y confiable",["Assamita","Giovanni"]],["Influyente y familiar",["Giovanni","Seguidores de Set"]],["Impredecible y libre",["Ravnos","Assamita"]],["Seductor y peligroso",["Seguidores de Set","Ravnos"]],["Discreto y necesario",["Assamita","Giovanni"]]]],
+    ["¿Qué relación tienes con la moral?", [["Tengo un código estricto",["Assamita","Giovanni"]],["La familia decide lo permitido",["Giovanni","Seguidores de Set"]],["La moral es una historia útil",["Ravnos","Seguidores de Set"]],["La virtud es una máscara que se puede romper",["Seguidores de Set","Ravnos"]],["La justicia exige sangre",["Assamita","Giovanni"]]]],
+    ["¿Dónde te sientes más seguro?", [["En rutas y escondites cambiantes",["Ravnos","Assamita"]],["En una propiedad familiar",["Giovanni","Seguidores de Set"]],["En un templo o club privado",["Seguidores de Set","Giovanni"]],["En un lugar desde donde vigilar",["Assamita","Ravnos"]],["Cerca de cuentas, contratos y cadáveres",["Giovanni","Assamita"]]]],
+    ["¿Qué herramienta sobrenatural te atrae?", [["Letalidad silenciosa",["Assamita","Ravnos"]],["Dominio sobre muertos",["Giovanni","Seguidores de Set"]],["Ilusiones y engaños",["Ravnos","Seguidores de Set"]],["Tentación y presencia corruptora",["Seguidores de Set","Giovanni"]],["Control social discreto",["Giovanni","Assamita"]]]],
+    ["¿Qué problema te persigue?", [["Una deuda de sangre",["Assamita","Giovanni"]],["Una familia que nunca suelta",["Giovanni","Seguidores de Set"]],["Un vicio recurrente",["Ravnos","Seguidores de Set"]],["Un culto con demasiados secretos",["Seguidores de Set","Giovanni"]],["Un contrato incumplido",["Assamita","Ravnos"]]]],
+    ["¿Qué tipo de aliado prefieres?", [["Un informante profesional",["Assamita","Ravnos"]],["Un pariente o socio",["Giovanni","Seguidores de Set"]],["Un viajero o estafador",["Ravnos","Assamita"]],["Un devoto seducido",["Seguidores de Set","Giovanni"]],["Un abogado o contador",["Giovanni","Assamita"]]]],
+    ["¿Qué frase define tu independencia?", [["Toda deuda debe pagarse",["Assamita","Giovanni"]],["La sangre familiar manda",["Giovanni","Seguidores de Set"]],["Ninguna jaula es real si sabes mentir",["Ravnos","Assamita"]],["Todos desean caer; yo solo abro la puerta",["Seguidores de Set","Ravnos"]],["Trabajo con todos, pertenezco a nadie",["Assamita","Ravnos"]]]]
+  ]
+};
+CLAN_QUESTIONS_BY_SECT["Caitiff"] = [
+  ["Sin clan reconocido, ¿cómo sobrevives?", [["Observando y aprendiendo",["Caitiff"]],["Cazando en silencio",["Caitiff"]],["Haciendo favores",["Caitiff"]],["Mintiendo sobre mi linaje",["Caitiff"]],["Escapando antes de que pregunten",["Caitiff"]]]]
+];
+CLAN_QUESTIONS_BY_SECT["Autarca"] = CLAN_QUESTIONS_BY_SECT["Caitiff"];
+
+const BACKGROUND_QUESTIONS_BY_SECT = {
+  "Camarilla": [
+    ["¿Qué recurso te protege mejor dentro de una ciudad de la Camarilla?", [["Reconocimiento dentro de la Estirpe","Estatus"],["Poder sobre instituciones mortales","Influencia"],["Dinero, propiedades o negocios","Recursos"],["Un antiguo que te guía o controla","Mentor"],["Informantes de la ciudad","Contactos"]]],
+    ["¿Qué red usarías para resolver un problema político?", [["Contactos del Elíseo","Contactos"],["Una deuda social con alguien influyente","Aliados"],["Recursos económicos discretos","Recursos"],["Prestigio ante otros Vástagos","Estatus"],["Un grupo de mortales útiles para alimentarte","Rebaño"]]],
+    ["¿Qué ventaja te ayuda a mantener la Mascarada?", [["Influencia en policía, prensa o salud","Influencia"],["Un refugio dentro del dominio","Refugio"],["Un mentor que conoce las Tradiciones","Mentor"],["Criados que limpian problemas","Criados"],["Contactos que avisan antes del desastre","Contactos"]]],
+    ["¿Qué recurso define tu posición social?", [["Estatus reconocido","Estatus"],["Recursos visibles","Recursos"],["Aliados respetables","Aliados"],["Fama mortal útil","Fama"],["Rebaño elegante y discreto","Rebaño"]]]
+  ],
+  "Sabbat": [
+    ["¿Qué te mantiene vivo dentro del Sabbat?", [["Compañeros de manada","Manada"],["Respeto dentro de la secta","Estatus Sabbat"],["Un sacerdote o ductus que te enseña","Mentor Sabbat"],["Un refugio compartido","Refugio de Manada"],["Contactos en pandillas o crimen","Contactos Criminales"]]],
+    ["¿Qué recurso usa tu manada para cazar?", [["Un rebaño controlado por la manada","Rebaño de Manada"],["Aliados violentos","Aliados Violentos"],["Contactos criminales","Contactos Criminales"],["Un refugio de emergencia","Refugio de Manada"],["Armas, autos o dinero rápido","Recursos"]]],
+    ["¿Qué te da valor frente a otros Sabbat?", [["Estatus Sabbat","Estatus Sabbat"],["Lealtad de manada","Manada"],["Mentor Sabbat","Mentor Sabbat"],["Contactos peligrosos","Contactos Criminales"],["Aliados violentos","Aliados Violentos"]]],
+    ["¿Qué recurso te permite sostener una guerra nocturna?", [["Refugio de Manada","Refugio de Manada"],["Recursos logísticos","Recursos"],["Rebaño de Manada","Rebaño de Manada"],["Contactos Criminales","Contactos Criminales"],["Manada","Manada"]]]
+  ],
+  "Independientes": [
+    ["¿Qué sostiene tu independencia frente a las sectas?", [["Red propia de información","Contactos"],["Dinero o negocios","Recursos"],["Socios o empleados útiles","Aliados"],["Influencia en un sector específico","Influencia"],["Un refugio privado","Refugio"]]],
+    ["¿Qué recurso usas para negociar?", [["Deudas a tu favor","Deuda Favorable"],["Red familiar o comercial","Red Familiar o Comercial"],["Contactos discretos","Contactos"],["Recursos ocultos","Recursos"],["Rebaño privado","Rebaño"]]],
+    ["¿Qué te permite actuar sin pedir permiso?", [["Refugio seguro","Refugio"],["Aliados de negocio","Aliados"],["Influencia criminal o comercial","Influencia"],["Red Familiar o Comercial","Red Familiar o Comercial"],["Contactos fuera de la Estirpe","Contactos"]]],
+    ["¿Qué ventaja ocultas de las grandes sectas?", [["Dinero no declarado","Recursos"],["Alguien te debe un favor","Deuda Favorable"],["Un rebaño discreto","Rebaño"],["Una red de socios","Red Familiar o Comercial"],["Un refugio alternativo","Refugio"]]]
+  ],
+  "Caitiff": [
+    ["¿Qué te permite sobrevivir sin clan?", [["Un lugar oculto donde dormir","Refugio Oculto"],["Gente de la calle que informa","Contactos Callejeros"],["Un mortal que aún confía en ti","Aliado Mortal"],["Una fuente limitada de sangre","Rebaño Pequeño"],["Dinero mínimo para moverte","Recursos Bajos"]]],
+    ["¿Qué recurso te ayuda a no ser descubierto?", [["Documentos o nombre falso","Identidad Falsa"],["Rutas para desaparecer","Ruta de Escape"],["Un refugio muy discreto","Refugio Oculto"],["Contactos Callejeros","Contactos Callejeros"],["Un mentor improbable","Mentor Improbable"]]],
+    ["¿Qué te queda cuando nadie responde por ti?", [["Aliado Mortal","Aliado Mortal"],["Recursos Bajos","Recursos Bajos"],["Ruta de Escape","Ruta de Escape"],["Rebaño Pequeño","Rebaño Pequeño"],["Refugio Oculto","Refugio Oculto"]]],
+    ["¿Quién te enseñó a no morir de nuevo?", [["Mentor Improbable","Mentor Improbable"],["Contactos Callejeros","Contactos Callejeros"],["Aliado Mortal","Aliado Mortal"],["Identidad Falsa","Identidad Falsa"],["Ruta de Escape","Ruta de Escape"]]]
+  ]
+};
+BACKGROUND_QUESTIONS_BY_SECT["Autarca"] = BACKGROUND_QUESTIONS_BY_SECT["Caitiff"];
+
+const STORY_QUESTIONS_BY_SECT = {
+  "Camarilla": [
+    ["¿Cómo fue presentado ante la sociedad vampírica?",["En un Elíseo formal","Ante el Príncipe con tensión","Por medio de su Sire","De forma improvisada","Aún no ha sido aceptado del todo"]],
+    ["¿Qué Tradición le preocupa más romper?",["La Mascarada","El Dominio","La Progenie","La Hospitalidad","La Destrucción"]],
+    ["¿Qué relación tiene con el Príncipe?",["Respeto prudente","Miedo abierto","Ambición de acercarse","Desconfianza política","No lo conoce personalmente"]],
+    ["¿Qué espera su Sire de él?",["Obediencia","Resultados políticos","Discreción","Prestigio para el clan","Que no lo avergüence"]],
+    ["¿Qué ocurrió en su primera noche social?",["Fue humillado","Ganó un aliado","Escuchó un secreto","Cometió un error","Impresionó a alguien"]],
+    ["¿Qué deuda política arrastra?",["Un favor al Sheriff","Una promesa a un Primogénito","Una deuda con su Sire","Un silencio comprado","Ninguna conocida por ahora"]],
+    ["¿Qué mortal amenaza la Mascarada?",["Un familiar curioso","Un periodista","Un policía","Una antigua pareja","Un empleado demasiado observador"]],
+    ["¿Qué desea obtener de la ciudad?",["Estatus","Seguridad","Influencia mortal","Venganza discreta","Acceso a secretos"]],
+    ["¿Qué rumor circula sobre él?",["Que fue Abrazado por interés político","Que sabe algo prohibido","Que es protegido de alguien","Que tiene un defecto peligroso","Que podría traicionar a su clan"]],
+    ["¿Qué dilema lo define?",["Obedecer o ser libre","Proteger humanos o proteger la Mascarada","Ser leal o ambicioso","Callar o revelar la verdad","Conservar humanidad o ganar poder"]]
+  ],
+  "Sabbat": [
+    ["¿Cómo llegó a su manada?",["Fue reclutado por violencia","Sobrevivió a una prueba","Fue rescatado de la Camarilla","Su Sire lo entregó a la manada","No recuerda bien el rito"]],
+    ["¿Qué rol cumple en la manada?",["Ductus potencial","Explorador","Combatiente","Profeta extraño","Rostro social peligroso"]],
+    ["¿Qué rito marcó su iniciación?",["Un juramento de sangre","Una cacería grupal","Una prueba de dolor","Una destrucción simbólica de su vida mortal","Un secreto compartido"]],
+    ["¿Qué parte humana intenta destruir?",["La culpa","El amor mortal","El miedo","La necesidad de aprobación","La compasión"]],
+    ["¿Qué enemigo común odia la manada?",["Un Príncipe de la Camarilla","Un cazador mortal","Una manada rival","Un Antiguo manipulador","Un traidor de la secta"]],
+    ["¿Qué crimen cometió para ser aceptado?",["Atacó a un mortal importante","Traicionó un refugio","Robó información","Participó en una ejecución","Se negó a salvar a alguien"]],
+    ["¿Qué tensión tiene con su manada?",["Compite por liderazgo","Temen su inestabilidad","Dudan de su lealtad","Lo consideran demasiado humano","Lo usan como arma"]],
+    ["¿Qué visión tiene del Sabbat?",["Una familia brutal","Una religión de guerra","Una libertad peligrosa","Un monstruo necesario","Un camino sin regreso"]],
+    ["¿Qué secreto oculta a la manada?",["Aún extraña a un mortal","Dudó durante una prueba","Tiene contacto con otra facción","Teme a su Sire","Disfrutó demasiado la violencia"]],
+    ["¿Qué podría destruirlo?",["La traición interna","Un ataque de la Camarilla","Perder el control de la Bestia","Desobedecer un rito","Recordar demasiado su humanidad"]]
+  ],
+  "Independientes": [
+    ["¿Por qué no pertenece a una secta dominante?",["Por tradición de clan","Por negocio","Por desconfianza","Por una deuda antigua","Porque nadie lo aceptaría sin pagar un precio"]],
+    ["¿Qué tipo de trato cambió su destino?",["Contrato de sangre","Deuda familiar","Pacto criminal","Negocio con muertos","Promesa hecha en secreto"]],
+    ["¿Qué red sostiene su no-vida?",["Familia","Socios comerciales","Contactos criminales","Viajeros e informantes","Culto o círculo privado"]],
+    ["¿Qué quiere de la Camarilla o Sabbat?",["Clientes","Protección temporal","Información","Venganza","Mantener distancia"]],
+    ["¿Qué deuda debe pagar?",["Dinero","Sangre","Silencio","Lealtad familiar","Un asesinato pendiente"]],
+    ["¿Qué mortal todavía le sirve?",["Un abogado","Un pariente","Un contador","Un informante","Una persona seducida"]],
+    ["¿Qué secreto comercial o familiar oculta?",["Un cadáver","Una cuenta oculta","Una traición","Un culto","Un contrato imposible"]],
+    ["¿Cómo consigue alimento?",["Por acuerdos discretos","Con redes privadas","A través de fiestas o negocios","Cazando en ruta","Usando deudas humanas"]],
+    ["¿Qué amenaza su independencia?",["Una secta que lo presiona","Una familia que exige demasiado","Un acreedor peligroso","Un enemigo de clan","Su propio vicio"]],
+    ["¿Qué quiere construir?",["Un negocio eterno","Una red de favores","Una ruta segura","Un culto propio","Una venganza paciente"]]
+  ],
+  "Caitiff": [
+    ["¿Cómo descubrió que no tenía clan reconocido?",["Su Sire desapareció","Otros Vástagos lo rechazaron","Sus Disciplinas no encajaban","Fue acusado de mentir","Nunca recibió explicación"]],
+    ["¿Quién le enseñó a sobrevivir?",["Un mortal leal","Un vampiro compasivo","Un Nosferatu curioso","Otro Caitiff","Nadie, aprendió con errores"]],
+    ["¿Qué mentira usa para no ser destruido?",["Finge pertenecer a un clan","Dice tener un Sire poderoso","Oculta sus Disciplinas","Evita presentarse","Usa otra identidad"]],
+    ["¿Qué perdió por no tener protección?",["Un refugio","Un aliado","Una oportunidad","Una relación mortal","La confianza en otros"]],
+    ["¿Qué desea demostrar?",["Que puede sobrevivir","Que merece respeto","Que su sangre no define su valor","Que puede vengarse","Que no necesita a nadie"]],
+    ["¿Qué miedo lo acompaña?",["Ser cazado por el Sheriff","Ser usado por una secta","No controlar la Bestia","Ser descubierto de día","Quedarse completamente solo"]],
+    ["¿Cómo consigue sangre?",["Caza con mucho cuidado","Usa un pequeño rebaño","Bancos de sangre","Acuerdos con mortales","Improvisa cada noche"]],
+    ["¿Qué relación tiene con otros Caitiff?",["Los busca","Los evita","Les debe favores","No conoce a ninguno","Teme que lo delaten"]],
+    ["¿Qué secreto guarda?",["Sabe quién fue su Sire","Mató para sobrevivir","Tiene una Disciplina extraña","Un mortal sabe lo que es","Fue protegido por un enemigo"]],
+    ["¿Qué futuro imagina?",["Ser aceptado","Huir de la ciudad","Crear su propia red","Vengarse de quien lo abandonó","Convertirse en algo peor"]]
+  ]
+};
+STORY_QUESTIONS_BY_SECT["Autarca"] = STORY_QUESTIONS_BY_SECT["Caitiff"];
+
+function activeClanQuestions(){ return CLAN_QUESTIONS_BY_SECT[S.sect] || CLAN_QUESTIONS_BY_SECT[sectLabel()] || CLAN_QUESTIONS_BY_SECT["Camarilla"]; }
+function activeBackgroundQuestions(){ return BACKGROUND_QUESTIONS_BY_SECT[S.sect] || BACKGROUND_QUESTIONS_BY_SECT[sectLabel()] || BACKGROUND_QUESTIONS_BY_SECT["Camarilla"]; }
+function activeStoryQuestions(){ return STORY_QUESTIONS_BY_SECT[S.sect] || STORY_QUESTIONS_BY_SECT[sectLabel()] || STORY_QUESTIONS_BY_SECT["Camarilla"]; }
+function clanPoolBySect(){
+  if(S.sect==="Camarilla") return ["Brujah","Gangrel","Malkavian","Nosferatu","Toreador","Tremere","Ventrue"];
+  if(S.sect==="Sabbat") return ["Lasombra","Tzimisce","Brujah","Gangrel","Malkavian","Nosferatu","Toreador"];
+  if(S.sect==="Independientes") return ["Assamita","Giovanni","Ravnos","Seguidores de Set"];
+  if(S.sect==="Caitiff") return ["Caitiff"];
+  return Object.keys(CLANS);
+}
+function activeBackgroundPool(){
+  let vals=[];
+  activeBackgroundQuestions().forEach(q=>q[1].forEach(op=>{ if(!vals.includes(op[1])) vals.push(op[1]); }));
+  return vals;
+}
+(function extendBackgroundDescriptionsV33(){
+  Object.assign(BG_DESC, {
+    "Manada":"Compañeros Sabbat que cazan, luchan y sobreviven contigo. Son protección y obligación al mismo tiempo.",
+    "Estatus Sabbat":"Respeto dentro de la Espada de Caín. Otros Sabbat reconocen tu valor, ferocidad o utilidad.",
+    "Mentor Sabbat":"Un ductus, sacerdote u otro Cainita te enseña ritos, supervivencia y política brutal de la secta.",
+    "Refugio de Manada":"Lugar compartido por la manada para descansar, planear o esconderse.",
+    "Contactos Criminales":"Pandillas, traficantes, ladrones o informantes de zonas peligrosas.",
+    "Rebaño de Manada":"Fuentes de sangre controladas por la manada, más prácticas que elegantes.",
+    "Aliados Violentos":"Mortales, ghouls o contactos útiles cuando se requiere intimidación o fuerza.",
+    "Deuda Favorable":"Alguien te debe un favor importante que puedes cobrar en una escena clave.",
+    "Red Familiar o Comercial":"Familia, socios o red económica que sostiene tus tratos y secretos.",
+    "Refugio Oculto":"Un lugar seguro y difícil de encontrar, aunque no necesariamente cómodo.",
+    "Contactos Callejeros":"Personas de la calle que saben moverse, escuchar rumores y desaparecer.",
+    "Aliado Mortal":"Una persona viva que todavía te ayuda, confía en ti o depende de ti.",
+    "Rebaño Pequeño":"Fuente limitada de sangre, útil pero vulnerable.",
+    "Recursos Bajos":"Dinero mínimo, trabajos informales o bienes modestos para sobrevivir.",
+    "Identidad Falsa":"Documentos, nombre alternativo o fachada para evitar ser rastreado.",
+    "Ruta de Escape":"Lugares, contactos o rutas preparadas para huir cuando todo salga mal.",
+    "Mentor Improbable":"Alguien que te enseñó lo básico sin aceptarte plenamente como protegido."
+  });
+})();
+
+function startClan(){
+ showProgressTools();
+ if(!S.name) S.name = el("startName")?.value.trim() || "Personaje sin nombre";
+ if(!S.playerName) S.playerName = el("startPlayer")?.value.trim() || "";
+ if(!S.sect){ S.sect="Camarilla"; S.sectLabel="Camarilla"; }
+ let questions=activeClanQuestions();
+ let box=el("clanQuestions");
+ box.innerHTML='<div class="summary-mini"><b>Organización:</b> '+esc(sectLabel())+'<br><span class="auto-note">Este test tiene '+questions.length+' preguntas y solo compara clanes coherentes con tu organización.</span></div>';
+ questions.forEach((q,i)=>{let d=document.createElement("div"); d.className="question"; d.innerHTML="<p><b>"+(i+1)+". "+q[0]+"</b></p>"; q[1].forEach((op,j)=>{d.innerHTML += '<label class="option"><input type="radio" name="cq'+i+'" value="'+j+'"> '+op[0]+'</label>'}); box.appendChild(d)});
+ show("stepClan");
+}
+function calcClan(){
+ let questions=activeClanQuestions();
+ let pool=clanPoolBySect();
+ let scores={}; pool.forEach(c=>scores[c]=0);
+ for(let i=0;i<questions.length;i++){
+   let r=document.querySelector('input[name="cq'+i+'"]:checked');
+   if(!r){alert("Falta responder la pregunta "+(i+1)); return}
+   questions[i][1][Number(r.value)][1].forEach((c,idx)=>{ if(scores[c]!==undefined) scores[c]+=idx===0?2:1; });
+ }
+ let sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+ if(S.sect==="Caitiff") sorted=[["Caitiff",999]];
+ S.clan=sorted[0][0];
+ if(S.clan==="Caitiff") applyCaitiffPackage();
+ applySectClanDisplay();
+ let c=CLANS[S.clan];
+ let otros=sorted.slice(1,3).map(x=>S.sect==="Sabbat" && !["Lasombra","Tzimisce"].includes(x[0])?x[0]+" antitribu":x[0]).join(', ') || "Sin resultados secundarios";
+ el("clanResult").innerHTML='<h2>Resultado del clan</h2><div class="result"><div class="logo">'+c.icon+'</div><h2>'+esc(displayClanName())+'</h2><p><b>Organización:</b> '+esc(sectLabel())+'</p><p>'+c.desc+'</p><p><b>Disciplinas:</b> '+c.disc.map(x=>'<span class="pill">'+x+'</span>').join("")+'</p><p><b>Debilidad:</b> '+c.weak+'</p><p>Otros resultados dentro de esta organización: '+otros+'</p>'+caitiffPackageHTML()+'</div><button type="button" onclick="if(S.clan===\'Caitiff\')applyCaitiffPackage();startBg()">Continuar a Trasfondos</button>';
+ show("clanResult");
+}
+function startBg(){
+ let questions=activeBackgroundQuestions();
+ let box=el("bgQuestions");
+ box.innerHTML='<div class="summary-mini"><b>Organización:</b> '+esc(sectLabel())+'<br><span class="auto-note">Los Trasfondos ahora están orientados a la organización del personaje.</span></div>';
+ questions.forEach((q,i)=>{
+   let d=document.createElement("div"); d.className="question"; d.innerHTML="<p><b>"+(i+1)+". "+q[0]+"</b></p>";
+   q[1].forEach((op,j)=>{ d.innerHTML+='<label class="option"><input type="radio" name="bq'+i+'" value="'+esc(op[1])+'"> '+op[0]+'<small>'+descForBackground(op[1])+'</small></label>'; });
+   box.appendChild(d);
+ });
+ show("bgStep");
+}
+function calcBg(){
+ let questions=activeBackgroundQuestions();
+ let arr=[];
+ for(let i=0;i<questions.length;i++){
+   let r=document.querySelector('input[name="bq'+i+'"]:checked');
+   if(!r){alert("Falta responder la pregunta de Trasfondos "+(i+1)); return}
+   if(!arr.includes(r.value)) arr.push(r.value);
+ }
+ const pool=activeBackgroundPool();
+ while(arr.length<3){
+   let available=pool.filter(x=>!arr.includes(x));
+   if(!available.length) break;
+   arr.push(available[Math.floor(Math.random()*available.length)]);
+ }
+ S.backgrounds=arr.slice(0,3);
+ el("bgResult").innerHTML='<h2>Trasfondos sugeridos</h2><div class="result"><p>El personaje tendrá exactamente <b>3 Trasfondos distintos</b>, seleccionados desde opciones coherentes con <b>'+esc(sectLabel())+'</b>.</p>'+S.backgrounds.map(x=>infoCard(x, descForBackground(x), "Trasfondo orientado a la organización del personaje.")).join("")+'</div><button type="button" onclick="startMerits()">Continuar</button>';
+ show("bgResult");
+}
+function startStory(){
+ let questions=activeStoryQuestions();
+ let box=el("storyQuestions");
+ box.innerHTML='<div class="summary-mini"><b>Historia según organización:</b> '+esc(sectLabel())+'<br><span class="auto-note">Este test adapta la historia al contexto político y narrativo del personaje.</span></div>';
+ questions.forEach((q,i)=>{let d=document.createElement("div");d.className="question";d.innerHTML="<p><b>"+(i+1)+". "+q[0]+"</b></p>";q[1].forEach(op=>d.innerHTML+='<label class="option"><input type="radio" name="hq'+i+'" value="'+esc(op)+'"> '+op+'</label>');box.appendChild(d)});
+ show("storyStep");
+}
+function generateStory(){
+ let questions=activeStoryQuestions();
+ let answers=[];
+ for(let i=0;i<questions.length;i++){
+   let r=document.querySelector('input[name="hq'+i+'"]:checked');
+   if(!r){alert("Falta responder la pregunta de historia "+(i+1));return}
+   answers.push({q:questions[i][0], a:r.value});
+ }
+ let name=el("name")?.value||S.name;
+ let c=CLANS[S.clan];
+ let clanShown=displayClanName();
+ let intro=name+" pertenece a "+sectLabel()+" y su resultado de clan es "+clanShown+". Sus Disciplinas iniciales son "+c.disc.join(", ")+". Su Debilidad principal es: "+c.weak+".";
+ let thematic = {
+   "Camarilla":"Su historia está marcada por la Mascarada, las Tradiciones, el peso del Príncipe y las apariencias del Elíseo.",
+   "Sabbat":"Su historia está marcada por la manada, los ritos, la violencia sagrada y la aceptación de la Bestia.",
+   "Independientes":"Su historia está marcada por tratos, deudas, redes propias y la necesidad de no pertenecer completamente a nadie.",
+   "Caitiff":"Su historia está marcada por el rechazo, la ausencia de linaje, la supervivencia y el miedo a ser destruido por no tener protección."
+ }[S.sect] || "Su historia está marcada por decisiones difíciles y secretos nocturnos.";
+ let body=answers.map((x,i)=>"• "+x.q+"\n  Respuesta: "+x.a).join("\n");
+ S.story=intro+"\n\n"+thematic+"\n\nResumen narrativo:\n"+body+"\n\nInterpretación sugerida: el Narrador puede usar estas respuestas para crear enemigos, aliados, deudas, objetivos y escenas personales conectadas con "+sectLabel()+".";
+ S.narrator="NOTAS DEL JUGADOR:\n- Organización: "+sectLabel()+"\n- Clan: "+clanShown+"\n- Disciplinas: "+c.disc.join(", ")+"\n- Trasfondos: "+(S.backgrounds||[]).join(", ")+"\n- Méritos: "+(S.merits||[]).map(x=>x[0]).join(", ")+"\n- Defectos: "+(S.flaws||[]).map(x=>x[0]).join(", ")+"\n\nRESPUESTAS CLAVE DE HISTORIA:\n"+answers.map((x,i)=>"- "+x.q+": "+x.a).join("\n");
+ showFinal(true);
+}
+function randomizeClanAnswers(){ randomizeRadiosByPrefix("cq", activeClanQuestions().length); }
+function randomizeBackgroundAnswers(){ randomizeRadiosByPrefix("bq", activeBackgroundQuestions().length); }
+function randomizeStoryAnswers(){ randomizeRadiosByPrefix("hq", activeStoryQuestions().length); }
+if(typeof rebindCoreButtons === "function") rebindCoreButtons();
+</script>
+
+<script>
+/* ===== v34: Defecto obligatorio y preguntas en lenguaje simple ===== */
+const SIMPLE_MERIT_QUESTIONS_BY_SECT = {
+  "Camarilla": [
+    ["Elige un problema personal obligatorio para tu personaje.", [
+      ["Alguien poderoso quiere perjudicarlo", "flaw", 3],
+      ["Debe un favor importante que todavía no puede pagar", "flaw", 2],
+      ["Tiene un secreto que arruinaría su reputación", "flaw", 2],
+      ["Depende emocionalmente de una persona viva", "flaw", 3],
+      ["La gente importante desconfía de él", "flaw", 2]
+    ]],
+    ["¿Qué ventaja social ayuda más a tu personaje?", [
+      ["Cae bien con facilidad", "merit", 2],
+      ["Sabe comportarse en reuniones elegantes", "merit", 1],
+      ["Tiene buena memoria para nombres, rostros y detalles", "merit", 2],
+      ["Tiene contactos útiles en la ciudad", "merit", 2],
+      ["Su imagen pública es respetable", "merit", 2]
+    ]],
+    ["¿Qué recurso práctico conserva de su vida anterior?", [
+      ["Dinero o propiedades discretas", "merit", 2],
+      ["Una persona influyente puede ayudarlo", "merit", 3],
+      ["Un protector antiguo le da consejos", "merit", 3],
+      ["Tiene una obligación con una autoridad local", "flaw", 3],
+      ["Un rival cercano compite contra él", "flaw", 2]
+    ]],
+    ["Cuando hay presión, ¿qué rasgo destaca más?", [
+      ["Mantiene la calma", "merit", 2],
+      ["Nota detalles que otros ignoran", "merit", 1],
+      ["Tiene suerte en momentos críticos", "merit", 3],
+      ["Una antigua relación todavía le duele", "flaw", 2],
+      ["Su mala fama le cierra puertas", "flaw", 2]
+    ]]
+  ],
+  "Sabbat": [
+    ["Elige un problema personal obligatorio para tu personaje.", [
+      ["Actúa por impulso cuando lo provocan", "flaw", 2],
+      ["Su crueldad ya es conocida", "flaw", 2],
+      ["Tiene un enemigo que busca venganza", "flaw", 2],
+      ["Su presencia incomoda a casi todos", "flaw", 2],
+      ["Es demasiado fanático y eso lo vuelve predecible", "flaw", 2]
+    ]],
+    ["¿Qué ventaja lo hace útil en un grupo peligroso?", [
+      ["Es leal con quienes pelean a su lado", "merit", 2],
+      ["Tiene fama de ser temible", "merit", 2],
+      ["Soporta bien el dolor", "merit", 3],
+      ["Mantiene la calma en situaciones extremas", "merit", 2],
+      ["Sabe moverse entre gente violenta", "merit", 2]
+    ]],
+    ["¿Cómo enfrenta una situación física o violenta?", [
+      ["Canaliza su rabia sin perderse por completo", "merit", 2],
+      ["Puede usar ambas manos con habilidad", "merit", 1],
+      ["Tiene buen instinto para perseguir o emboscar", "merit", 2],
+      ["Un rival no deja de desafiarlo", "flaw", 2],
+      ["Algo extraño parece seguirlo desde su pasado", "flaw", 3]
+    ]],
+    ["¿Qué le permite sobrevivir en noches difíciles?", [
+      ["Resiste hambre, miedo y presión", "merit", 2],
+      ["Tiene contactos en ambientes peligrosos", "merit", 2],
+      ["Percibe amenazas antes que otros", "merit", 1],
+      ["Tiene mala reputación incluso entre aliados", "flaw", 2],
+      ["Se enoja antes de escuchar explicaciones", "flaw", 2]
+    ]]
+  ],
+  "Independientes": [
+    ["Elige un problema personal obligatorio para tu personaje.", [
+      ["Debe dinero, favores o información a alguien peligroso", "flaw", 2],
+      ["Hizo un trato que algún día tendrá un precio", "flaw", 3],
+      ["Un competidor quiere quitarle sus recursos", "flaw", 2],
+      ["Su familia o antiguo círculo todavía le exige lealtad", "flaw", 2],
+      ["Oculta algo que podría destruir sus negocios o alianzas", "flaw", 2]
+    ]],
+    ["¿Qué ventaja le permite actuar por cuenta propia?", [
+      ["Tiene una red de negocios o intercambio", "merit", 2],
+      ["Tiene dinero o bienes ocultos", "merit", 2],
+      ["Tiene contactos útiles en varias áreas", "merit", 2],
+      ["Mantiene la calma al negociar", "merit", 2],
+      ["Recuerda detalles, cifras y acuerdos con precisión", "merit", 2]
+    ]],
+    ["¿Qué herramienta usa para resolver problemas?", [
+      ["Una identidad falsa o fachada confiable", "merit", 2],
+      ["Una persona influyente puede abrirle puertas", "merit", 3],
+      ["Tiene suerte cuando todo parece perdido", "merit", 3],
+      ["Alguien depende de él y puede ponerlo en riesgo", "flaw", 3],
+      ["Su reputación genera desconfianza", "flaw", 2]
+    ]],
+    ["¿Qué rasgo lo ayuda a no depender de nadie?", [
+      ["Sabe leer oportunidades y peligros", "merit", 1],
+      ["Tiene encanto natural para convencer", "merit", 2],
+      ["Tiene contactos que le deben favores", "merit", 2],
+      ["Un enemigo conoce parte de su vida privada", "flaw", 2],
+      ["Un viejo acuerdo lo limita", "flaw", 2]
+    ]]
+  ],
+  "Caitiff": [
+    ["Elige un problema personal obligatorio para tu personaje.", [
+      ["No tiene a nadie importante que responda por él", "flaw", 3],
+      ["Muchos lo rechazan porque no pertenece a un grupo claro", "flaw", 3],
+      ["Su lugar de descanso no es completamente seguro", "flaw", 2],
+      ["Alguien lo busca porque cree que es una presa fácil", "flaw", 2],
+      ["Su apariencia o actitud incomoda a los demás", "flaw", 2]
+    ]],
+    ["¿Qué ventaja le permite sobrevivir solo?", [
+      ["Sabe conseguir refugio, comida e información en la calle", "merit", 2],
+      ["Tiene una identidad falsa o un nombre alternativo", "merit", 2],
+      ["Tiene suerte en momentos críticos", "merit", 3],
+      ["Percibe amenazas rápidamente", "merit", 1],
+      ["Mantiene la calma aunque esté solo", "merit", 2]
+    ]],
+    ["¿Qué apoyo conserva a pesar de su situación?", [
+      ["Una persona viva todavía confía en él", "merit", 2],
+      ["Alguien extraño le enseñó lo básico", "merit", 2],
+      ["Tiene contactos discretos", "merit", 2],
+      ["Guarda un secreto que puede condenarlo", "flaw", 1],
+      ["Alguien depende de él", "flaw", 3]
+    ]],
+    ["¿Cómo evita ser atrapado?", [
+      ["Tiene rutas de escape preparadas", "merit", 2],
+      ["Puede usar ambas manos con habilidad", "merit", 1],
+      ["Sabe desaparecer antes de que lo noten", "merit", 2],
+      ["Su mala fama lo persigue", "flaw", 2],
+      ["Su refugio tiene fallas peligrosas", "flaw", 2]
+    ]]
+  ]
+};
+SIMPLE_MERIT_QUESTIONS_BY_SECT["Autarca"] = SIMPLE_MERIT_QUESTIONS_BY_SECT["Caitiff"];
+function activeMeritQuestions(){
+  return SIMPLE_MERIT_QUESTIONS_BY_SECT[S.sect] || SIMPLE_MERIT_QUESTIONS_BY_SECT[sectLabel()] || SIMPLE_MERIT_QUESTIONS_BY_SECT["Camarilla"];
+}
+(function extendTraitDescriptionsV34(){
+  const add = {
+    "Alguien poderoso quiere perjudicarlo":"Un rival con poder o recursos busca dañarlo, bloquearlo o usarlo como ejemplo.",
+    "Debe un favor importante que todavía no puede pagar":"Hay una deuda pendiente. Quien la posee puede exigir ayuda en el peor momento.",
+    "Tiene un secreto que arruinaría su reputación":"Oculta algo que cambiaría la forma en que otros lo tratan.",
+    "Depende emocionalmente de una persona viva":"Todavía existe alguien vivo que puede hacerlo tomar malas decisiones.",
+    "La gente importante desconfía de él":"Aunque no siempre lo dicen, las personas con poder no terminan de aceptarlo.",
+    "Cae bien con facilidad":"Su forma de hablar, mirar o comportarse hace que otros le den oportunidades.",
+    "Sabe comportarse en reuniones elegantes":"Entiende códigos sociales, respeto, silencio y oportunidad.",
+    "Tiene buena memoria para nombres, rostros y detalles":"Recuerda datos útiles con precisión, incluso bajo presión.",
+    "Tiene contactos útiles en la ciudad":"Conoce personas que pueden entregar datos, rumores o ayuda puntual.",
+    "Su imagen pública es respetable":"Su nombre todavía abre puertas en ciertos círculos.",
+    "Dinero o propiedades discretas":"Cuenta con recursos que no siempre están a la vista.",
+    "Una persona influyente puede ayudarlo":"Alguien con poder puede intervenir a su favor, aunque no gratis.",
+    "Un protector antiguo le da consejos":"Un guía experimentado lo orienta, pero también puede exigir obediencia.",
+    "Tiene una obligación con una autoridad local":"Debe cumplir una responsabilidad impuesta por alguien con poder.",
+    "Un rival cercano compite contra él":"Alguien de su entorno quiere superarlo, humillarlo o reemplazarlo.",
+    "Mantiene la calma":"No se rompe fácilmente ante miedo, amenazas o presión.",
+    "Nota detalles que otros ignoran":"Percibe señales pequeñas: tonos, gestos, sonidos o cambios de ambiente.",
+    "Tiene suerte en momentos críticos":"A veces el azar parece inclinarse a su favor.",
+    "Una antigua relación todavía le duele":"Un vínculo perdido sigue afectando sus decisiones.",
+    "Su mala fama le cierra puertas":"Otros han escuchado cosas negativas sobre él, ciertas o no.",
+    "Actúa por impulso cuando lo provocan":"Reacciona demasiado rápido ante insultos, miedo o rabia.",
+    "Su crueldad ya es conocida":"La gente sabe que puede ser duro, frío o excesivo.",
+    "Tiene un enemigo que busca venganza":"Alguien desea cobrar una ofensa pasada.",
+    "Su presencia incomoda a casi todos":"Hay algo en él que produce tensión o rechazo.",
+    "Es demasiado fanático y eso lo vuelve predecible":"Se aferra tanto a una idea que otros pueden anticipar sus actos.",
+    "Es leal con quienes pelean a su lado":"Cuando acepta a un grupo, lo defiende con fuerza.",
+    "Tiene fama de ser temible":"Su reputación intimida antes de que actúe.",
+    "Soporta bien el dolor":"Tolera heridas, cansancio o miedo físico mejor que la mayoría.",
+    "Sabe moverse entre gente violenta":"Entiende códigos de peligro, amenaza y respeto callejero.",
+    "Canaliza su rabia sin perderse por completo":"Puede usar la ira como impulso sin quedar totalmente dominado por ella.",
+    "Puede usar ambas manos con habilidad":"Tiene coordinación útil para combate, herramientas o acciones delicadas.",
+    "Tiene buen instinto para perseguir o emboscar":"Sabe esperar, seguir rastros y escoger el momento adecuado.",
+    "Un rival no deja de desafiarlo":"Alguien insiste en provocarlo o competir con él.",
+    "Algo extraño parece seguirlo desde su pasado":"Su historia arrastra señales, recuerdos o presencias inquietantes.",
+    "Resiste hambre, miedo y presión":"Aguanta situaciones difíciles sin rendirse rápido.",
+    "Tiene contactos en ambientes peligrosos":"Conoce gente de la calle, crimen, seguridad o lugares marginales.",
+    "Percibe amenazas antes que otros":"Detecta tensión y peligro con rapidez.",
+    "Tiene mala reputación incluso entre aliados":"Hasta quienes trabajan con él tienen dudas sobre su conducta.",
+    "Se enoja antes de escuchar explicaciones":"La rabia aparece antes que la paciencia.",
+    "Debe dinero, favores o información a alguien peligroso":"Una deuda lo ata a una persona o grupo que no conviene enfadar.",
+    "Hizo un trato que algún día tendrá un precio":"Recibió algo útil, pero la consecuencia llegará después.",
+    "Un competidor quiere quitarle sus recursos":"Alguien busca quedarse con su red, dinero, refugio o contactos.",
+    "Su familia o antiguo círculo todavía le exige lealtad":"Su pasado sigue reclamando atención, dinero o silencio.",
+    "Oculta algo que podría destruir sus negocios o alianzas":"Un secreto amenaza sus acuerdos y su seguridad.",
+    "Tiene una red de negocios o intercambio":"Conoce rutas, compradores, vendedores o personas útiles.",
+    "Tiene dinero o bienes ocultos":"Posee recursos guardados fuera de la vista de otros.",
+    "Mantiene la calma al negociar":"No se altera fácilmente cuando hay presión o amenaza.",
+    "Recuerda detalles, cifras y acuerdos con precisión":"Su memoria ayuda a no ser engañado.",
+    "Una identidad falsa o fachada confiable":"Puede presentarse con otro nombre, historia o papel social.",
+    "Alguien depende de él y puede ponerlo en riesgo":"Una persona vulnerable puede ser usada contra él.",
+    "Un enemigo conoce parte de su vida privada":"Alguien tiene información personal que podría usar en su contra.",
+    "Un viejo acuerdo lo limita":"Una promesa o trato anterior reduce su libertad.",
+    "No tiene a nadie importante que responda por él":"Si algo sale mal, nadie poderoso dará explicaciones por él.",
+    "Muchos lo rechazan porque no pertenece a un grupo claro":"Su falta de pertenencia genera sospecha o desprecio.",
+    "Su lugar de descanso no es completamente seguro":"Su refugio puede ser descubierto, atacado o perdido.",
+    "Alguien lo busca porque cree que es una presa fácil":"Un enemigo cree que puede dañarlo sin consecuencias.",
+    "Su apariencia o actitud incomoda a los demás":"Algo en su forma de estar provoca rechazo o nerviosismo.",
+    "Sabe conseguir refugio, comida e información en la calle":"Tiene recursos de supervivencia práctica.",
+    "Tiene una identidad falsa o un nombre alternativo":"Puede ocultar parte de su pasado y moverse con más libertad.",
+    "Una persona viva todavía confía en él":"Conserva un vínculo humano que puede ayudarlo o complicarlo.",
+    "Alguien extraño le enseñó lo básico":"Recibió guía de una fuente poco usual o poco confiable.",
+    "Tiene contactos discretos":"Conoce personas que ayudan sin hacer demasiadas preguntas.",
+    "Guarda un secreto que puede condenarlo":"Si se revela, otros podrían perseguirlo o abandonarlo.",
+    "Tiene rutas de escape preparadas":"Sabe cómo desaparecer cuando todo sale mal.",
+    "Sabe desaparecer antes de que lo noten":"Evita llamar la atención y se retira a tiempo.",
+    "Su mala fama lo persigue":"Los rumores lo siguen incluso cuando cambia de lugar.",
+    "Su refugio tiene fallas peligrosas":"Su escondite tiene debilidades reales: acceso, seguridad o testigos."
+  };
+  Object.assign(TRAIT_DESC, add);
+})();
+function randomizeMeritAnswers(){ randomizeRadiosByPrefix("mq", activeMeritQuestions().length); }
+if(typeof rebindCoreButtons === "function") rebindCoreButtons();
+</script>
+
+</body></html>
